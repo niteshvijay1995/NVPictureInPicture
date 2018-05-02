@@ -7,8 +7,14 @@
 
 #import "NVPIPViewController.h"
 
+typedef NS_ENUM(NSInteger, NVPIPDisplayMode) {
+  NVPIPDisplayModeCompact,
+  NVPIPDisplayModeExpanded
+};
+
 @interface NVPIPViewController()
 
+@property (nonatomic) NVPIPDisplayMode displayMode;
 @property (nonatomic) UIPanGestureRecognizer *panGesture;
 
 @end
@@ -17,6 +23,7 @@
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+  self.displayMode = NVPIPDisplayModeExpanded;
   self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panDidFire:)];
   [self.view addGestureRecognizer:self.panGesture];
 }
