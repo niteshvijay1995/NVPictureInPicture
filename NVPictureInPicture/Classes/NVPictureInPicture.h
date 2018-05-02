@@ -7,6 +7,10 @@
 
 #import <Foundation/Foundation.h>
 
+@class NVPIPViewController;
+
 @interface NVPictureInPicture : NSObject
+
+- (void)presentNVPIPViewController:(NVPIPViewController *)viewController;
 
 @end
