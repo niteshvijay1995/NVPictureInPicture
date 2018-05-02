@@ -9,4 +9,7 @@
 
 @interface NVPIPWindow : UIWindow
 
+- (instancetype)initWithFrame:(CGRect)frame
+                  windowLevel:(CGFloat)windowLevel;
+
 @end
