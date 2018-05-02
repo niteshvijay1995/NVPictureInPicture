@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'NVPictureInPicture_Example' do
+  pod 'NVPictureInPicture', :path => '../'
+
+  target 'NVPictureInPicture_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
