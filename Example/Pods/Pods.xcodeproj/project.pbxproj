@@ -37,8 +37,8 @@
 /* Begin PBXFileReference section */
 		056CAB2F1582AF6552010246C38B54B4 /* NVPictureInPicture-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NVPictureInPicture-umbrella.h"; sourceTree = "<group>"; };
 		09984520053F7E6E7247DE3738E9F440 /* Pods-NVPictureInPicture_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-NVPictureInPicture_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
-		0AC1EBD52099EB6800295A13 /* NVPIPWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVPIPWindow.h; sourceTree = "<group>"; };
-		0AC1EBD62099EB6800295A13 /* NVPIPWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVPIPWindow.m; sourceTree = "<group>"; };
+		0AC1EBD52099EB6800295A13 /* NVPIPWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NVPIPWindow.h; path = NVPictureInPicture/Classes/NVPIPWindow.h; sourceTree = "<group>"; };
+		0AC1EBD62099EB6800295A13 /* NVPIPWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = NVPIPWindow.m; path = NVPictureInPicture/Classes/NVPIPWindow.m; sourceTree = "<group>"; };
 		0AC1EBD92099EBF800295A13 /* NVPictureInPicture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVPictureInPicture.h; sourceTree = "<group>"; };
 		0AC1EBDA2099EBF800295A13 /* NVPictureInPicture.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVPictureInPicture.m; sourceTree = "<group>"; };
 		0AC1EBDD2099F04B00295A13 /* NVPIPViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = NVPIPViewController.h; path = NVPictureInPicture/Classes/NVPIPViewController.h; sourceTree = "<group>"; };
