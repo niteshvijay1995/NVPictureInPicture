@@ -5,8 +5,10 @@
 //  Created by Nitesh Vijay on 02/05/18.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
-@interface NVPIPViewController : NSObject
+@interface NVPIPViewController : UIViewController
+
+- (BOOL)shouldReceivePoint:(CGPoint)point;
 
 @end

@@ -9,4 +9,8 @@
 
 @implementation NVPIPViewController
 
+- (BOOL)shouldReceivePoint:(CGPoint)point {
+  return CGRectContainsPoint(self.view.frame, point);
+}
+
 @end
