@@ -20,4 +20,8 @@
   return self;
 }
 
+- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
+  return [self.delegate isEventPoint:point];
+}
+
 @end
