@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0AC1EBD72099EB6800295A13 /* NVPIPWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AC1EBD52099EB6800295A13 /* NVPIPWindow.h */; };
+		0AC1EBD82099EB6800295A13 /* NVPIPWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AC1EBD62099EB6800295A13 /* NVPIPWindow.m */; };
 		26BE336B504D766587969E599D45D728 /* Pods-NVPictureInPicture_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B1C4AAF95A72579A24FE925B8D3DD5FA /* Pods-NVPictureInPicture_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		277611A30E971221F1FA5D3B3E95D59C /* Pods-NVPictureInPicture_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 558DED345ABFAF2DCDADEAEE72E9ABF4 /* Pods-NVPictureInPicture_Example-dummy.m */; };
 		2926A33235B1432CD5B128E9758F07B1 /* Pods-NVPictureInPicture_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E96DB9261A5C6B328D9F26FD2936E832 /* Pods-NVPictureInPicture_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -31,6 +33,8 @@
 /* Begin PBXFileReference section */
 		056CAB2F1582AF6552010246C38B54B4 /* NVPictureInPicture-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NVPictureInPicture-umbrella.h"; sourceTree = "<group>"; };
 		09984520053F7E6E7247DE3738E9F440 /* Pods-NVPictureInPicture_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-NVPictureInPicture_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
+		0AC1EBD52099EB6800295A13 /* NVPIPWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NVPIPWindow.h; sourceTree = "<group>"; };
+		0AC1EBD62099EB6800295A13 /* NVPIPWindow.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NVPIPWindow.m; sourceTree = "<group>"; };
 		0FF30752E17AC66C520831902A5E8857 /* NVPictureInPicture.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = NVPictureInPicture.xcconfig; sourceTree = "<group>"; };
 		13087F87293B10513085D6CBFEED64C4 /* Pods-NVPictureInPicture_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-NVPictureInPicture_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		162BE3CA9096789676E4F2208FCB597A /* Pods-NVPictureInPicture_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-NVPictureInPicture_Tests-resources.sh"; sourceTree = "<group>"; };
@@ -143,6 +147,8 @@
 			children = (
 				5E1B1BF83007D1B58723EB3F71EC5996 /* Pod */,
 				EAC61D8F67A7CDDB94112A561881EC8B /* Support Files */,
+				0AC1EBD52099EB6800295A13 /* NVPIPWindow.h */,
+				0AC1EBD62099EB6800295A13 /* NVPIPWindow.m */,
 			);
 			name = NVPictureInPicture;
 			path = ../..;
@@ -224,6 +230,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0AC1EBD72099EB6800295A13 /* NVPIPWindow.h in Headers */,
 				6D4D6F152BA3832B11AFEF42DB93FDC6 /* NVPictureInPicture-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -341,6 +348,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				37D7F6941347086536863E4F9A11B9D1 /* NVPictureInPicture-dummy.m in Sources */,
+				0AC1EBD82099EB6800295A13 /* NVPIPWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
