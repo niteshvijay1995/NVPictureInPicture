@@ -26,6 +26,13 @@
   [self makeWindowVisible];
 }
 
+- (void)dismissPresentedViewControllerWithCompletion: (void (^ __nullable)(void))completion {
+  self.window.delegate = nil;
+  self.window = nil;
+  self.viewController = nil;
+  completion();
+}
+
 - (void)makeWindowVisible {
   UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
   [self.window makeKeyAndVisible];

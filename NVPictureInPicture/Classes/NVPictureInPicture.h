@@ -13,4 +13,6 @@
 
 - (void)presentNVPIPViewController:(NVPIPViewController *)viewController;
 
+- (void)dismissPresentedViewControllerWithCompletion: (void (^ __nullable)(void))completion;
+
 @end
