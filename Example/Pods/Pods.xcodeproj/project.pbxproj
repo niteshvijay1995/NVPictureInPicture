@@ -11,7 +11,6 @@
 		277611A30E971221F1FA5D3B3E95D59C /* Pods-NVPictureInPicture_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 558DED345ABFAF2DCDADEAEE72E9ABF4 /* Pods-NVPictureInPicture_Example-dummy.m */; };
 		2926A33235B1432CD5B128E9758F07B1 /* Pods-NVPictureInPicture_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E96DB9261A5C6B328D9F26FD2936E832 /* Pods-NVPictureInPicture_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		37D7F6941347086536863E4F9A11B9D1 /* NVPictureInPicture-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 307DA47C66D72341B371C6712FC3908A /* NVPictureInPicture-dummy.m */; };
-		401D432242A48CAB11729D9CDC711EE5 /* ReplaceMe.m in Sources */ = {isa = PBXBuildFile; fileRef = 04D36F2F861212EBC0507777278D8DDB /* ReplaceMe.m */; };
 		6D4D6F152BA3832B11AFEF42DB93FDC6 /* NVPictureInPicture-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 056CAB2F1582AF6552010246C38B54B4 /* NVPictureInPicture-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9D932C65F9E832E45D33FC010D9B4C88 /* Pods-NVPictureInPicture_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 68C6750A06A71D939450988802AFBD85 /* Pods-NVPictureInPicture_Tests-dummy.m */; };
 		AA157FAD79E2E475E171006A4D09321B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
@@ -30,7 +29,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		04D36F2F861212EBC0507777278D8DDB /* ReplaceMe.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = ReplaceMe.m; path = NVPictureInPicture/Classes/ReplaceMe.m; sourceTree = "<group>"; };
 		056CAB2F1582AF6552010246C38B54B4 /* NVPictureInPicture-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NVPictureInPicture-umbrella.h"; sourceTree = "<group>"; };
 		09984520053F7E6E7247DE3738E9F440 /* Pods-NVPictureInPicture_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-NVPictureInPicture_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		0FF30752E17AC66C520831902A5E8857 /* NVPictureInPicture.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = NVPictureInPicture.xcconfig; sourceTree = "<group>"; };
@@ -143,7 +141,6 @@
 		54BED450B59F164C8F994E30B8930BD0 /* NVPictureInPicture */ = {
 			isa = PBXGroup;
 			children = (
-				04D36F2F861212EBC0507777278D8DDB /* ReplaceMe.m */,
 				5E1B1BF83007D1B58723EB3F71EC5996 /* Pod */,
 				EAC61D8F67A7CDDB94112A561881EC8B /* Support Files */,
 			);
@@ -344,7 +341,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				37D7F6941347086536863E4F9A11B9D1 /* NVPictureInPicture-dummy.m in Sources */,
-				401D432242A48CAB11729D9CDC711EE5 /* ReplaceMe.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
