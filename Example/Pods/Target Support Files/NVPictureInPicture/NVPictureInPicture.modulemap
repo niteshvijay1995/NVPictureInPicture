@@ -1,0 +1,6 @@
+framework module NVPictureInPicture {
+  umbrella header "NVPictureInPicture-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,6 @@
+framework module Pods_NVPictureInPicture_Tests {
+  umbrella header "Pods-NVPictureInPicture_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}
