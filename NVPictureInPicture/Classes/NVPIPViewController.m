@@ -8,14 +8,9 @@
 #import "NVPIPViewController.h"
 
 static const CGSize DefaultSizeInCompactMode = {100, 150};
-static const CGFloat PanSensitivity = 2.0f;
+static const CGFloat PanSensitivity = 1.5f;
 static const CGFloat ThresholdPercentForDisplayModeCompact = 0.5;
 static const CGFloat AnimationDuration = 0.2f;
-
-typedef NS_ENUM(NSInteger, NVPIPDisplayMode) {
-  NVPIPDisplayModeExpanded,
-  NVPIPDisplayModeCompact
-};
 
 @interface NVPIPViewController()
 
@@ -33,6 +28,7 @@ typedef NS_ENUM(NSInteger, NVPIPDisplayMode) {
   [super viewDidLoad];
   self.edgeInsets = [self edgeInsetsForDisplayModeCompact];
   self.compactModeFrame = [self frameForDisplayMode:NVPIPDisplayModeCompact];
+  self.compactModeFrame = [self validFrameForCompactDisplayModeFrame:self.compactModeFrame];
   self.expandedModeFrame = [self frameForDisplayMode:NVPIPDisplayModeExpanded];
   self.displayMode = NVPIPDisplayModeExpanded;
   self.view.frame = self.expandedModeFrame;
@@ -120,36 +116,51 @@ typedef NS_ENUM(NSInteger, NVPIPDisplayMode) {
 }
 
 - (void)animateViewToDisplayMode:(NVPIPDisplayMode)displayMode {
-  [UIView animateWithDuration:AnimationDuration animations:^{
-    self.view.frame = [self frameForDisplayMode:displayMode];
-  }];
+  if (displayMode == NVPIPDisplayModeCompact) {
+    [UIView animateWithDuration:AnimationDuration animations:^{
+      self.view.frame = self.compactModeFrame;
+    }];
+  } else {
+    [UIView animateWithDuration:AnimationDuration animations:^{
+      self.view.frame = self.expandedModeFrame;
+    }];
+  }
+  
 }
 
 - (void)stickCompactViewToEdge {
-  CGSize screenSize = [UIScreen mainScreen].bounds.size;
-  CGPoint center = self.view.center;
-  CGPoint newCenter;
-  if (center.x < screenSize.width / 2) {
-    newCenter = CGPointMake(self.edgeInsets.left + CGRectGetWidth(self.view.bounds) / 2,
-                                center.y);
-  } else {
-    newCenter = CGPointMake(screenSize.width - CGRectGetWidth(self.view.bounds) / 2 - self.edgeInsets.right,
-                                center.y);
+  if (self.displayMode == NVPIPDisplayModeExpanded) {
+    return;
   }
   [UIView animateWithDuration:AnimationDuration animations:^{
-    self.view.center = [self validateCenterPoint:newCenter];
+    self.view.center = [self validCenterPoint:self.view.center
+                                     withSize:self.view.bounds.size];
   }];
 }
 
-- (CGPoint)validateCenterPoint:(CGPoint)point {
+- (CGPoint)validCenterPoint:(CGPoint)point
+                   withSize:(CGSize)size {
   CGSize screenSize = [UIScreen mainScreen].bounds.size;
-  if (point.y < self.edgeInsets.top + self.view.bounds.size.height / 2) {
-    point.y = self.edgeInsets.top + self.view.bounds.size.height / 2;
+  if (point.x < screenSize.width / 2) {
+    point.x = self.edgeInsets.left + size.width / 2;
+  } else {
+    point.x = screenSize.width - size.width / 2 - self.edgeInsets.right;
   }
-  if (point.y > screenSize.height - self.view.bounds.size.height / 2 - self.edgeInsets.bottom) {
-    point.y = screenSize.height - self.view.bounds.size.height / 2 - self.edgeInsets.bottom;
+  if (point.y < self.edgeInsets.top + size.height / 2) {
+    point.y = self.edgeInsets.top + size.height / 2;
+  }
+  if (point.y > screenSize.height - size.height / 2 - self.edgeInsets.bottom) {
+    point.y = screenSize.height - size.height / 2 - self.edgeInsets.bottom;
   }
   return point;
+}
+
+- (CGRect)validFrameForCompactDisplayModeFrame:(CGRect)frame {
+  CGPoint newCenter = [self validCenterPoint:CGPointMake(CGRectGetMidX(frame), CGRectGetMidY(frame))
+                                    withSize:frame.size];
+  frame.origin = CGPointMake(newCenter.x - frame.size.width / 2,
+                             newCenter.y - frame.size.height / 2);
+  return frame;
 }
 
 - (BOOL)shouldReceivePoint:(CGPoint)point {
