@@ -30,7 +30,9 @@
   self.window.delegate = nil;
   self.window = nil;
   self.viewController = nil;
-  completion();
+  if (completion != NULL) {
+    completion();
+  }
 }
 
 - (void)makeWindowVisible {
