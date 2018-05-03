@@ -114,7 +114,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RDW-ye-uz8">
-                                <rect key="frame" x="99" y="126" width="157" height="74"/>
+                                <rect key="frame" x="109" y="126" width="157" height="74"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="157" id="QBh-d3-Mbt"/>
                                 </constraints>
@@ -123,15 +123,32 @@
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z6O-wN-v2F">
+                                <rect key="frame" x="109" y="208" width="157" height="74"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="157" id="Kk7-7k-fl1"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="30"/>
+                                <state key="normal" title="Back">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
+                                <connections>
+                                    <action selector="back:" destination="h6T-9L-9SW" eventType="touchUpInside" id="EYD-cv-dsp"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="hm9-3w-Rz8" firstAttribute="top" secondItem="z6O-wN-v2F" secondAttribute="bottom" constant="385" id="5jg-46-zt0"/>
+                            <constraint firstItem="z6O-wN-v2F" firstAttribute="centerX" secondItem="RDW-ye-uz8" secondAttribute="centerX" id="Aq2-4A-SwG"/>
+                            <constraint firstItem="z6O-wN-v2F" firstAttribute="top" secondItem="RDW-ye-uz8" secondAttribute="bottom" constant="8" symbolic="YES" id="HpF-cv-h0g"/>
                             <constraint firstItem="hm9-3w-Rz8" firstAttribute="top" secondItem="RDW-ye-uz8" secondAttribute="bottom" constant="467" id="XXL-3x-cuv"/>
                             <constraint firstItem="RDW-ye-uz8" firstAttribute="top" secondItem="UZf-Uh-hBV" secondAttribute="bottom" constant="106" id="czj-Rd-hJc"/>
-                            <constraint firstItem="RDW-ye-uz8" firstAttribute="leading" secondItem="hYT-Z2-yd1" secondAttribute="leadingMargin" constant="83" id="ebE-bR-nss"/>
+                            <constraint firstItem="z6O-wN-v2F" firstAttribute="centerX" secondItem="hYT-Z2-yd1" secondAttribute="centerX" id="exX-Cj-dNA"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="backButton" destination="z6O-wN-v2F" id="Bel-in-cMK"/>
                         <outlet property="closeButton" destination="RDW-ye-uz8" id="Nuh-dl-UMz"/>
                     </connections>
                 </viewController>

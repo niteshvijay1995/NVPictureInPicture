@@ -13,6 +13,7 @@ static const CGFloat EdgeInset = 5;
 @interface NVPIPSubViewController () <NVPIPViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
+@property (weak, nonatomic) IBOutlet UIButton *backButton;
 
 @end
 
@@ -50,13 +51,18 @@ static const CGFloat EdgeInset = 5;
 - (void)pipViewController:(NVPIPViewController *)viewController willChangeToDisplayMode:(NVPIPDisplayMode)displayMode {
   if (displayMode == NVPIPDisplayModeCompact) {
     self.closeButton.alpha = 0;
+    self.backButton.alpha = 0;
   }
 }
 
 - (void)pipViewController:(NVPIPViewController *)viewController didChangeToDisplayMode:(NVPIPDisplayMode)displayMode {
   if (displayMode == NVPIPDisplayModeExpanded) {
     self.closeButton.alpha = 1;
+    self.backButton.alpha = 1;
   }
 }
 
+- (IBAction)back:(id)sender {
+  [self setDisplayMode:NVPIPDisplayModeCompact animated:YES];
+}
 @end
