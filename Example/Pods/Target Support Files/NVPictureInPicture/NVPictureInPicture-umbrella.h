@@ -10,6 +10,9 @@
 #endif
 #endif
 
+#import "NVPictureInPicture.h"
+#import "NVPIPViewController.h"
+#import "NVPIPWindow.h"
 
 FOUNDATION_EXPORT double NVPictureInPictureVersionNumber;
 FOUNDATION_EXPORT const unsigned char NVPictureInPictureVersionString[];

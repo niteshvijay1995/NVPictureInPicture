@@ -8,6 +8,6 @@
 
 @import UIKit;
 
-@interface NVPIPViewController : UIViewController
+@interface NVRootViewController : UIViewController
 
 @end
