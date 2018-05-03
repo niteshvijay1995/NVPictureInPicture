@@ -10,6 +10,7 @@
 static const CGSize DefaultSizeInCompactMode = {100, 150};
 static const CGFloat PanSensitivity = 2.0f;
 static const CGFloat ThresholdPercentForDisplayModeCompact = 0.5;
+static const CGFloat AnimationDuration = 0.2f;
 
 typedef NS_ENUM(NSInteger, NVPIPDisplayMode) {
   NVPIPDisplayModeExpanded,
@@ -55,7 +56,7 @@ typedef NS_ENUM(NSInteger, NVPIPDisplayMode) {
 }
 
 - (UIEdgeInsets)edgeInsetsForDisplayModeCompact {
-  return UIEdgeInsetsMake(30, 10, 30, 10);
+  return UIEdgeInsetsMake(10, 10, 10, 10);
 }
 
 - (void)handlePan:(UIGestureRecognizer *)gestureRecognizer {
@@ -94,7 +95,7 @@ typedef NS_ENUM(NSInteger, NVPIPDisplayMode) {
   } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded
              || gestureRecognizer.state == UIGestureRecognizerStateCancelled
              || gestureRecognizer.state == UIGestureRecognizerStateFailed) {
-    return;
+    [self stickCompactViewToEdge];
   }
 }
 
@@ -119,9 +120,36 @@ typedef NS_ENUM(NSInteger, NVPIPDisplayMode) {
 }
 
 - (void)animateViewToDisplayMode:(NVPIPDisplayMode)displayMode {
-  [UIView animateWithDuration:0.2 animations:^{
+  [UIView animateWithDuration:AnimationDuration animations:^{
     self.view.frame = [self frameForDisplayMode:displayMode];
   }];
+}
+
+- (void)stickCompactViewToEdge {
+  CGSize screenSize = [UIScreen mainScreen].bounds.size;
+  CGPoint center = self.view.center;
+  CGPoint newCenter;
+  if (center.x < screenSize.width / 2) {
+    newCenter = CGPointMake(self.edgeInsets.left + CGRectGetWidth(self.view.bounds) / 2,
+                                center.y);
+  } else {
+    newCenter = CGPointMake(screenSize.width - CGRectGetWidth(self.view.bounds) / 2 - self.edgeInsets.right,
+                                center.y);
+  }
+  [UIView animateWithDuration:AnimationDuration animations:^{
+    self.view.center = [self validateCenterPoint:newCenter];
+  }];
+}
+
+- (CGPoint)validateCenterPoint:(CGPoint)point {
+  CGSize screenSize = [UIScreen mainScreen].bounds.size;
+  if (point.y < self.edgeInsets.top + self.view.bounds.size.height / 2) {
+    point.y = self.edgeInsets.top + self.view.bounds.size.height / 2;
+  }
+  if (point.y > screenSize.height - self.view.bounds.size.height / 2 - self.edgeInsets.bottom) {
+    point.y = screenSize.height - self.view.bounds.size.height / 2 - self.edgeInsets.bottom;
+  }
+  return point;
 }
 
 - (BOOL)shouldReceivePoint:(CGPoint)point {
