@@ -120,6 +120,10 @@ static const CGFloat AnimationDuration = 0.2f;
 }
 
 - (void)setDisplayMode:(NVPIPDisplayMode)displayMode animated:(BOOL)animated {
+  if (self.delegate != nil
+      && [self.delegate respondsToSelector:@selector(pipViewController:willChangeToDisplayMode:)]) {
+    [self.delegate pipViewController:self willChangeToDisplayMode:displayMode];
+  }
   __block CGRect newFrame;
   switch (displayMode) {
     case NVPIPDisplayModeCompact:
