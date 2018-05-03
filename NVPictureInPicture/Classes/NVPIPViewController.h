@@ -22,6 +22,8 @@ typedef NS_ENUM(NSInteger, NVPIPDisplayMode) {
 
 - (CGRect)frameForDisplayMode:(NVPIPDisplayMode)displayMode;
 
+- (void)setDisplayMode:(NVPIPDisplayMode)displayMode animated:(BOOL)animated;
+
 - (BOOL)shouldReceivePoint:(CGPoint)point;
 
 @end
