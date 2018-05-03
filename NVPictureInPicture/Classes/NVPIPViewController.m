@@ -16,6 +16,7 @@ static const CGFloat AnimationDuration = 0.2f;
 
 @property (nonatomic) NVPIPDisplayMode displayMode;
 @property (nonatomic) UIPanGestureRecognizer *panGesture;
+@property (nonatomic) UITapGestureRecognizer *tapGesture;
 @property (nonatomic) CGRect compactModeFrame;
 @property (nonatomic) CGRect expandedModeFrame;
 @property (nonatomic) UIEdgeInsets edgeInsets;
@@ -30,10 +31,10 @@ static const CGFloat AnimationDuration = 0.2f;
   self.compactModeFrame = [self frameForDisplayMode:NVPIPDisplayModeCompact];
   self.compactModeFrame = [self validFrameForCompactDisplayModeFrame:self.compactModeFrame];
   self.expandedModeFrame = [self frameForDisplayMode:NVPIPDisplayModeExpanded];
-  self.displayMode = NVPIPDisplayModeExpanded;
-  self.view.frame = self.expandedModeFrame;
   self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
   [self.view addGestureRecognizer:self.panGesture];
+  self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+  [self setDisplayMode:NVPIPDisplayModeExpanded animated:NO];
 }
 
 - (CGRect)frameForDisplayMode:(NVPIPDisplayMode)displayMode {
@@ -108,24 +109,33 @@ static const CGFloat AnimationDuration = 0.2f;
 
 - (void)setDisplayModeWithTranslationPercentage:(CGFloat)percentage {
   if (percentage > ThresholdPercentForDisplayModeCompact) {
-    self.displayMode = NVPIPDisplayModeCompact;
+    [self setDisplayMode:NVPIPDisplayModeCompact animated:YES];
   } else {
-    self.displayMode = NVPIPDisplayModeExpanded;
+    [self setDisplayMode:NVPIPDisplayModeExpanded animated:YES];
   }
-  [self animateViewToDisplayMode:self.displayMode];
 }
 
-- (void)animateViewToDisplayMode:(NVPIPDisplayMode)displayMode {
-  if (displayMode == NVPIPDisplayModeCompact) {
+- (void)setDisplayMode:(NVPIPDisplayMode)displayMode animated:(BOOL)animated {
+  __block CGRect newFrame;
+  switch (displayMode) {
+    case NVPIPDisplayModeCompact:
+      self.displayMode = NVPIPDisplayModeCompact;
+      newFrame = self.compactModeFrame;
+      [self.view addGestureRecognizer:self.tapGesture];
+      break;
+    case NVPIPDisplayModeExpanded:
+      self.displayMode = NVPIPDisplayModeExpanded;
+      newFrame = self.expandedModeFrame;
+      [self.view removeGestureRecognizer:self.tapGesture];
+      break;
+  }
+  if (animated) {
     [UIView animateWithDuration:AnimationDuration animations:^{
-      self.view.frame = self.compactModeFrame;
+      self.view.frame = newFrame;
     }];
   } else {
-    [UIView animateWithDuration:AnimationDuration animations:^{
-      self.view.frame = self.expandedModeFrame;
-    }];
+    self.view.frame = newFrame;
   }
-  
 }
 
 - (void)stickCompactViewToEdge {
@@ -148,8 +158,7 @@ static const CGFloat AnimationDuration = 0.2f;
   }
   if (point.y < self.edgeInsets.top + size.height / 2) {
     point.y = self.edgeInsets.top + size.height / 2;
-  }
-  if (point.y > screenSize.height - size.height / 2 - self.edgeInsets.bottom) {
+  }else if (point.y > screenSize.height - size.height / 2 - self.edgeInsets.bottom) {
     point.y = screenSize.height - size.height / 2 - self.edgeInsets.bottom;
   }
   return point;
@@ -161,6 +170,10 @@ static const CGFloat AnimationDuration = 0.2f;
   frame.origin = CGPointMake(newCenter.x - frame.size.width / 2,
                              newCenter.y - frame.size.height / 2);
   return frame;
+}
+
+- (void)handleTap:(UIGestureRecognizer *)gestureRecognizer {
+  [self setDisplayMode:NVPIPDisplayModeExpanded animated:YES];
 }
 
 - (BOOL)shouldReceivePoint:(CGPoint)point {
