@@ -8,7 +8,8 @@
 
 #import "NVRootViewController.h"
 #import <NVPictureInPicture/NVPictureInPicture.h>
-#import <NVPictureInPicture/NVPIPViewController.h>
+#import "NVPIPSubViewController.h"
+
 
 @interface NVRootViewController ()
 
@@ -26,7 +27,7 @@
 }
 
 - (IBAction)handleTap:(UIButton *)sender {
-  NVPIPViewController *viewController = [[NVPIPViewController alloc] init];
+  NVPIPSubViewController *viewController = [[NVPIPSubViewController alloc] init];
   viewController.view.backgroundColor = sender.backgroundColor;
   [self.pictureInPicture presentNVPIPViewController:viewController];
 }

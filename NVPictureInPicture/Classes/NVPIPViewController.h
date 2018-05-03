@@ -9,6 +9,8 @@
 
 @interface NVPIPViewController : UIViewController
 
+- (UIEdgeInsets)edgeInsetsForDisplayModeCompact;
+
 - (BOOL)shouldReceivePoint:(CGPoint)point;
 
 @end
