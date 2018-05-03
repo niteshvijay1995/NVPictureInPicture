@@ -29,4 +29,15 @@ static const CGFloat EdgeInset = 5;
                           EdgeInset + safeAreaInsets.right);
 }
 
+- (CGRect)frameForDisplayMode:(NVPIPDisplayMode)displayMode {
+  CGSize screenSize = [UIScreen mainScreen].bounds.size;
+  if (displayMode == NVPIPDisplayModeCompact) {
+    return CGRectMake(2 * screenSize.width / 3 ,
+                      2 * screenSize.height / 3,
+                      screenSize.width / 4,
+                      screenSize.height / 5);
+  }
+  return [super frameForDisplayMode:displayMode];
+}
+
 @end
