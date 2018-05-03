@@ -12,12 +12,26 @@ typedef NS_ENUM(NSInteger, NVPIPDisplayMode) {
   NVPIPDisplayModeCompact
 };
 
+@protocol NVPIPViewControllerDelegate;
+
 @interface NVPIPViewController : UIViewController
+
+@property (nonatomic, weak) id<NVPIPViewControllerDelegate> delegate;
 
 - (UIEdgeInsets)edgeInsetsForDisplayModeCompact;
 
 - (CGRect)frameForDisplayMode:(NVPIPDisplayMode)displayMode;
 
 - (BOOL)shouldReceivePoint:(CGPoint)point;
+
+@end
+
+@protocol NVPIPViewControllerDelegate <NSObject>
+
+@optional
+- (void)pipViewController:(NVPIPViewController *)viewController willChangeToDisplayMode:(NVPIPDisplayMode)displayMode;
+
+@optional
+- (void)pipViewController:(NVPIPViewController *)viewController didChangeToDisplayMode:(NVPIPDisplayMode)displayMode;
 
 @end
