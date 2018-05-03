@@ -122,6 +122,9 @@
                                 <state key="normal" title="Close">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                 </state>
+                                <connections>
+                                    <action selector="close:" destination="h6T-9L-9SW" eventType="touchUpInside" id="bYu-Qa-GGZ"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z6O-wN-v2F">
                                 <rect key="frame" x="109" y="208" width="157" height="74"/>

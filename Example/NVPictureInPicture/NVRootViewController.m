@@ -29,6 +29,9 @@
 - (IBAction)handleTap:(UIButton *)sender {
   NVPIPSubViewController *viewController = (NVPIPSubViewController *)[[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"NVPIPSubViewController"];
   viewController.view.backgroundColor = sender.backgroundColor;
+  viewController.closeBlock = ^{
+    [self.pictureInPicture dismissPresentedViewControllerWithCompletion:nil];
+  };
   [self.pictureInPicture presentNVPIPViewController:viewController];
 }
 

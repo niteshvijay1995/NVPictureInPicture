@@ -65,4 +65,9 @@ static const CGFloat EdgeInset = 5;
 - (IBAction)back:(id)sender {
   [self setDisplayMode:NVPIPDisplayModeCompact animated:YES];
 }
+
+- (IBAction)close:(id)sender {
+  self.closeBlock();
+}
+
 @end

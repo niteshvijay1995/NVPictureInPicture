@@ -10,4 +10,6 @@
 
 @interface NVPIPSubViewController : NVPIPViewController
 
+@property (nonatomic) void(^closeBlock)(void);
+
 @end
