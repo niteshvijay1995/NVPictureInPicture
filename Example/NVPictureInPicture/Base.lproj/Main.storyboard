@@ -101,5 +101,43 @@
             </objects>
             <point key="canvasLocation" x="304.80000000000001" y="432.23388305847078"/>
         </scene>
+        <!--Sub View Controller-->
+        <scene sceneID="aLq-jU-Bzq">
+            <objects>
+                <viewController storyboardIdentifier="NVPIPSubViewController" id="h6T-9L-9SW" customClass="NVPIPSubViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="UZf-Uh-hBV"/>
+                        <viewControllerLayoutGuide type="bottom" id="hm9-3w-Rz8"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hYT-Z2-yd1">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RDW-ye-uz8">
+                                <rect key="frame" x="99" y="126" width="157" height="74"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="157" id="QBh-d3-Mbt"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="black" pointSize="30"/>
+                                <state key="normal" title="Close">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="hm9-3w-Rz8" firstAttribute="top" secondItem="RDW-ye-uz8" secondAttribute="bottom" constant="467" id="XXL-3x-cuv"/>
+                            <constraint firstItem="RDW-ye-uz8" firstAttribute="top" secondItem="UZf-Uh-hBV" secondAttribute="bottom" constant="106" id="czj-Rd-hJc"/>
+                            <constraint firstItem="RDW-ye-uz8" firstAttribute="leading" secondItem="hYT-Z2-yd1" secondAttribute="leadingMargin" constant="83" id="ebE-bR-nss"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="closeButton" destination="RDW-ye-uz8" id="Nuh-dl-UMz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="oTT-ql-Zbk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1132" y="432.23388305847078"/>
+        </scene>
     </scenes>
 </document>

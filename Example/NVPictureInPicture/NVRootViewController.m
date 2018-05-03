@@ -27,7 +27,7 @@
 }
 
 - (IBAction)handleTap:(UIButton *)sender {
-  NVPIPSubViewController *viewController = [[NVPIPSubViewController alloc] init];
+  NVPIPSubViewController *viewController = (NVPIPSubViewController *)[[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"NVPIPSubViewController"];
   viewController.view.backgroundColor = sender.backgroundColor;
   [self.pictureInPicture presentNVPIPViewController:viewController];
 }

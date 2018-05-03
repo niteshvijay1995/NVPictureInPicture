@@ -10,11 +10,18 @@
 
 static const CGFloat EdgeInset = 5;
 
-@interface NVPIPSubViewController ()
+@interface NVPIPSubViewController () <NVPIPViewControllerDelegate>
+
+@property (weak, nonatomic) IBOutlet UIButton *closeButton;
 
 @end
 
 @implementation NVPIPSubViewController
+
+- (void)viewDidLoad {
+  [super viewDidLoad];
+  self.delegate = self;
+}
 
 - (UIEdgeInsets)edgeInsetsForDisplayModeCompact {
   UIEdgeInsets safeAreaInsets;
@@ -38,6 +45,18 @@ static const CGFloat EdgeInset = 5;
                       screenSize.height / 5);
   }
   return [super frameForDisplayMode:displayMode];
+}
+
+- (void)pipViewController:(NVPIPViewController *)viewController willChangeToDisplayMode:(NVPIPDisplayMode)displayMode {
+  if (displayMode == NVPIPDisplayModeCompact) {
+    self.closeButton.alpha = 0;
+  }
+}
+
+- (void)pipViewController:(NVPIPViewController *)viewController didChangeToDisplayMode:(NVPIPDisplayMode)displayMode {
+  if (displayMode == NVPIPDisplayModeExpanded) {
+    self.closeButton.alpha = 1;
+  }
 }
 
 @end
