@@ -21,6 +21,7 @@ static const CGFloat EdgeInset = 5;
 
 - (void)viewDidLoad {
   [super viewDidLoad];
+  self.view.clipsToBounds = YES;
   self.delegate = self;
 }
 
@@ -42,13 +43,13 @@ static const CGFloat EdgeInset = 5;
   if (displayMode == NVPIPDisplayModeCompact) {
     return CGRectMake(2 * screenSize.width / 3 ,
                       2 * screenSize.height / 3,
-                      screenSize.width / 4,
-                      screenSize.height / 5);
+                      screenSize.width / 3,
+                      screenSize.width / 3);
   }
   return [super frameForDisplayMode:displayMode];
 }
 
-- (void)pipViewController:(NVPIPViewController *)viewController willChangeToDisplayMode:(NVPIPDisplayMode)displayMode {
+- (void)pipViewController:(NVPIPViewController *)viewController willStartTransitionToDisplayMode:(NVPIPDisplayMode)displayMode {
   if (displayMode == NVPIPDisplayModeCompact) {
     self.closeButton.alpha = 0;
     self.backButton.alpha = 0;
@@ -63,11 +64,22 @@ static const CGFloat EdgeInset = 5;
 }
 
 - (IBAction)back:(id)sender {
+  self.closeButton.alpha = 0;
+  self.backButton.alpha = 0;
   [self setDisplayMode:NVPIPDisplayModeCompact animated:YES];
 }
 
 - (IBAction)close:(id)sender {
   self.closeBlock();
+}
+
+- (void)updateViewWithTranslationPercentage:(CGFloat)percentage {
+  [super updateViewWithTranslationPercentage:percentage];
+  if (percentage <= 0.5) {
+    self.view.layer.cornerRadius = percentage * fmin(self.view.bounds.size.width, self.view.bounds.size.height);
+  } else {
+    self.view.layer.cornerRadius = 0.5 * fmin(self.view.bounds.size.width, self.view.bounds.size.height);
+  }
 }
 
 @end
