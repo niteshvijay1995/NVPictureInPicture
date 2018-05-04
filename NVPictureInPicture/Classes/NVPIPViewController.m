@@ -67,10 +67,6 @@ static const CGFloat AnimationDuration = 0.2f;
 - (void)handlePanForDisplayModeExpanded:(UIPanGestureRecognizer *)gestureRecognizer {
   if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
     [self.panGesture setTranslation:CGPointZero inView:self.view];
-    if (self.delegate != nil
-        && [self.delegate respondsToSelector:@selector(pipViewController:willChangeToDisplayMode:)]) {
-      [self.delegate pipViewController:self willChangeToDisplayMode:NVPIPDisplayModeCompact];
-    }
   } else {
     CGPoint translation = [gestureRecognizer translationInView:self.view];
     CGFloat percentage = PanSensitivity * fabs(translation.y / (CGRectGetHeight(self.expandedModeFrame) - CGRectGetHeight(self.compactModeFrame)));
@@ -193,10 +189,6 @@ static const CGFloat AnimationDuration = 0.2f;
 
 - (void)handleTap:(UIGestureRecognizer *)gestureRecognizer {
   if (self.displayMode == NVPIPDisplayModeCompact) {
-    if (self.delegate != nil
-        && [self.delegate respondsToSelector:@selector(pipViewController:willChangeToDisplayMode:)]) {
-      [self.delegate pipViewController:self willChangeToDisplayMode:NVPIPDisplayModeExpanded];
-    }
     [self setDisplayMode:NVPIPDisplayModeExpanded animated:YES];
   }
 }
