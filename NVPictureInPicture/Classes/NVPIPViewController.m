@@ -67,12 +67,19 @@ static const CGFloat AnimationDuration = 0.2f;
 - (void)handlePanForDisplayModeExpanded:(UIPanGestureRecognizer *)gestureRecognizer {
   if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
     [self.panGesture setTranslation:CGPointZero inView:self.view];
+    if (self.delegate != nil
+        && [self.delegate respondsToSelector:@selector(pipViewController:willStartTransitionToDisplayMode:)]) {
+      [self.delegate pipViewController:self willStartTransitionToDisplayMode:NVPIPDisplayModeCompact];
+    }
   } else {
     CGPoint translation = [gestureRecognizer translationInView:self.view];
     CGFloat percentage = PanSensitivity * fabs(translation.y / (CGRectGetHeight(self.expandedModeFrame) - CGRectGetHeight(self.compactModeFrame)));
-    if (gestureRecognizer.state == UIGestureRecognizerStateChanged
-        && percentage <= 1) {
-      [self updateViewWithTranslationPercentage:percentage];
+    if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
+      if (percentage < 1.0) {
+        [self updateViewWithTranslationPercentage:percentage];
+      } else {
+        [self updateViewWithTranslationPercentage:1.0];
+      }
     } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded
                || gestureRecognizer.state == UIGestureRecognizerStateCancelled
                || gestureRecognizer.state == UIGestureRecognizerStateFailed) {
@@ -120,23 +127,23 @@ static const CGFloat AnimationDuration = 0.2f;
       && [self.delegate respondsToSelector:@selector(pipViewController:willChangeToDisplayMode:)]) {
     [self.delegate pipViewController:self willChangeToDisplayMode:displayMode];
   }
-  __block CGRect newFrame;
+  CGFloat translationPercentage;
   switch (displayMode) {
     case NVPIPDisplayModeCompact:
       self.displayMode = NVPIPDisplayModeCompact;
-      newFrame = self.compactModeFrame;
+      translationPercentage = 1.0;
       [self.view addGestureRecognizer:self.tapGesture];
       break;
     case NVPIPDisplayModeExpanded:
       self.displayMode = NVPIPDisplayModeExpanded;
-      newFrame = self.expandedModeFrame;
+      translationPercentage = 0.0;
       [self.view removeGestureRecognizer:self.tapGesture];
       break;
   }
   if (animated) {
     [UIView animateWithDuration:AnimationDuration
                      animations:^{
-                       self.view.frame = newFrame;
+                       [self updateViewWithTranslationPercentage:translationPercentage];
                      } completion:^(BOOL finished) {
                        if (finished
                            && self.delegate != nil
@@ -145,7 +152,7 @@ static const CGFloat AnimationDuration = 0.2f;
                        }
                      }];
   } else {
-    self.view.frame = newFrame;
+    [self updateViewWithTranslationPercentage:translationPercentage];
     if (self.delegate != nil
         && [self.delegate respondsToSelector:@selector(pipViewController:didChangeToDisplayMode:)]) {
       [self.delegate pipViewController:self didChangeToDisplayMode:displayMode];
@@ -189,6 +196,10 @@ static const CGFloat AnimationDuration = 0.2f;
 
 - (void)handleTap:(UIGestureRecognizer *)gestureRecognizer {
   if (self.displayMode == NVPIPDisplayModeCompact) {
+    if (self.delegate != nil
+        && [self.delegate respondsToSelector:@selector(pipViewController:willStartTransitionToDisplayMode:)]) {
+      [self.delegate pipViewController:self willStartTransitionToDisplayMode:NVPIPDisplayModeExpanded];
+    }
     [self setDisplayMode:NVPIPDisplayModeExpanded animated:YES];
   }
 }

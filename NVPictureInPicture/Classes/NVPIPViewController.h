@@ -24,6 +24,8 @@ typedef NS_ENUM(NSInteger, NVPIPDisplayMode) {
 
 - (void)setDisplayMode:(NVPIPDisplayMode)displayMode animated:(BOOL)animated;
 
+- (void)updateViewWithTranslationPercentage:(CGFloat)percentage;
+
 - (BOOL)shouldReceivePoint:(CGPoint)point;
 
 @end
@@ -35,5 +37,8 @@ typedef NS_ENUM(NSInteger, NVPIPDisplayMode) {
 
 @optional
 - (void)pipViewController:(NVPIPViewController *)viewController didChangeToDisplayMode:(NVPIPDisplayMode)displayMode;
+
+@optional
+- (void)pipViewController:(NVPIPViewController *)viewController willStartTransitionToDisplayMode:(NVPIPDisplayMode)displayMode;
 
 @end
