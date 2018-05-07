@@ -11,6 +11,7 @@ static const CGSize DefaultSizeInCompactMode = {100, 150};
 static const CGFloat PanSensitivity = 1.5f;
 static const CGFloat ThresholdPercentForDisplayModeCompact = 0.5;
 static const CGFloat AnimationDuration = 0.2f;
+static const UIEdgeInsets DefaultCompactModeEdgeInsets = {10,10,10,10};
 
 @interface NVPIPViewController()
 
@@ -19,7 +20,6 @@ static const CGFloat AnimationDuration = 0.2f;
 @property (nonatomic) UITapGestureRecognizer *tapGesture;
 @property (nonatomic) CGRect compactModeFrame;
 @property (nonatomic) CGRect expandedModeFrame;
-@property (nonatomic) UIEdgeInsets edgeInsets;
 
 @end
 
@@ -27,7 +27,7 @@ static const CGFloat AnimationDuration = 0.2f;
 
 - (void)viewDidLoad {
   [super viewDidLoad];
-  self.edgeInsets = [self edgeInsetsForDisplayModeCompact];
+  self.compactModeEdgeInsets = DefaultCompactModeEdgeInsets;
   self.compactModeFrame = [self frameForDisplayMode:NVPIPDisplayModeCompact];
   self.compactModeFrame = [self validFrameForCompactDisplayModeFrame:self.compactModeFrame];
   self.expandedModeFrame = [self frameForDisplayMode:NVPIPDisplayModeExpanded];
@@ -40,8 +40,8 @@ static const CGFloat AnimationDuration = 0.2f;
 - (CGRect)frameForDisplayMode:(NVPIPDisplayMode)displayMode {
   CGSize screenSize = [UIScreen mainScreen].bounds.size;
   if (displayMode == NVPIPDisplayModeCompact) {
-    return CGRectMake(screenSize.width - self.edgeInsets.right - DefaultSizeInCompactMode.width,
-                      screenSize.height - self.edgeInsets.bottom - DefaultSizeInCompactMode.height,
+    return CGRectMake(screenSize.width - self.compactModeEdgeInsets.right - DefaultSizeInCompactMode.width,
+                      screenSize.height - self.compactModeEdgeInsets.bottom - DefaultSizeInCompactMode.height,
                       DefaultSizeInCompactMode.width,
                       DefaultSizeInCompactMode.height);
   } else {
@@ -50,10 +50,6 @@ static const CGFloat AnimationDuration = 0.2f;
                       screenSize.width,
                       screenSize.height);
   }
-}
-
-- (UIEdgeInsets)edgeInsetsForDisplayModeCompact {
-  return UIEdgeInsetsMake(10, 10, 10, 10);
 }
 
 - (void)handlePan:(UIGestureRecognizer *)gestureRecognizer {
@@ -162,6 +158,7 @@ static const CGFloat AnimationDuration = 0.2f;
 
 - (void)stickCompactViewToEdge {
   if (self.displayMode == NVPIPDisplayModeExpanded) {
+    NSLog(@"Warning: stickCompactViewToEdge called on active display mode expanded.");
     return;
   }
   [UIView animateWithDuration:AnimationDuration animations:^{
@@ -170,18 +167,37 @@ static const CGFloat AnimationDuration = 0.2f;
   }];
 }
 
+- (void)moveCompactModeViewViewWithOffset:(CGPoint)offset animated:(BOOL)animated {
+  if (self.displayMode == NVPIPDisplayModeExpanded) {
+    NSLog(@"Warning: moveCompactModeViewViewWithOffset: called on active display mode expanded.");
+    return;
+  }
+  CGPoint newCenter = self.view.center;
+  newCenter.x += offset.x;
+  newCenter.y += offset.y;
+  if (animated) {
+    [UIView animateWithDuration:AnimationDuration animations:^{
+      self.view.center = [self validCenterPoint:newCenter
+                                       withSize:self.view.bounds.size];
+    }];
+  } else {
+    self.view.center = [self validCenterPoint:newCenter
+                                     withSize:self.view.bounds.size];
+  }
+}
+
 - (CGPoint)validCenterPoint:(CGPoint)point
                    withSize:(CGSize)size {
   CGSize screenSize = [UIScreen mainScreen].bounds.size;
   if (point.x < screenSize.width / 2) {
-    point.x = self.edgeInsets.left + size.width / 2;
+    point.x = self.compactModeEdgeInsets.left + size.width / 2;
   } else {
-    point.x = screenSize.width - size.width / 2 - self.edgeInsets.right;
+    point.x = screenSize.width - size.width / 2 - self.compactModeEdgeInsets.right;
   }
-  if (point.y < self.edgeInsets.top + size.height / 2) {
-    point.y = self.edgeInsets.top + size.height / 2;
-  }else if (point.y > screenSize.height - size.height / 2 - self.edgeInsets.bottom) {
-    point.y = screenSize.height - size.height / 2 - self.edgeInsets.bottom;
+  if (point.y < self.compactModeEdgeInsets.top + size.height / 2) {
+    point.y = self.compactModeEdgeInsets.top + size.height / 2;
+  }else if (point.y > screenSize.height - size.height / 2 - self.compactModeEdgeInsets.bottom) {
+    point.y = screenSize.height - size.height / 2 - self.compactModeEdgeInsets.bottom;
   }
   return point;
 }

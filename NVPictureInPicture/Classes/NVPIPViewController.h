@@ -18,7 +18,7 @@ typedef NS_ENUM(NSInteger, NVPIPDisplayMode) {
 
 @property (nonatomic, weak) id<NVPIPViewControllerDelegate> delegate;
 
-- (UIEdgeInsets)edgeInsetsForDisplayModeCompact;
+@property (nonatomic) UIEdgeInsets compactModeEdgeInsets;
 
 - (CGRect)frameForDisplayMode:(NVPIPDisplayMode)displayMode;
 
@@ -26,7 +26,11 @@ typedef NS_ENUM(NSInteger, NVPIPDisplayMode) {
 
 - (void)updateViewWithTranslationPercentage:(CGFloat)percentage;
 
+- (void)stickCompactViewToEdge;
+
 - (BOOL)shouldReceivePoint:(CGPoint)point;
+
+- (void)moveCompactModeViewViewWithOffset:(CGPoint)offset animated:(BOOL)animated;
 
 @end
 
