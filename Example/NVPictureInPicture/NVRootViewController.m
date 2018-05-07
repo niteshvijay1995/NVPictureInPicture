@@ -27,6 +27,7 @@
 }
 
 - (IBAction)handleTap:(UIButton *)sender {
+  [self.view endEditing:YES];
   NVPIPSubViewController *viewController = (NVPIPSubViewController *)[[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"NVPIPSubViewController"];
   viewController.view.backgroundColor = sender.backgroundColor;
   viewController.closeBlock = ^{
@@ -35,5 +36,8 @@
   [self.pictureInPicture presentNVPIPViewController:viewController];
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+  [self.view endEditing:YES];
+}
 
 @end

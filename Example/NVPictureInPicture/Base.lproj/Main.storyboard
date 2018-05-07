@@ -78,6 +78,12 @@
                                     <action selector="handleTap:" destination="whP-gf-Uak" eventType="touchUpInside" id="JmT-mF-xCs"/>
                                 </connections>
                             </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Comments" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yZh-aL-tox">
+                                <rect key="frame" x="66" y="318" width="243" height="30"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -87,13 +93,16 @@
                             <constraint firstItem="I7v-JK-9Gq" firstAttribute="top" secondItem="huA-cu-qh6" secondAttribute="bottom" constant="20" id="70O-HU-d2n"/>
                             <constraint firstItem="huA-cu-qh6" firstAttribute="leading" secondItem="I7v-JK-9Gq" secondAttribute="leading" id="7hL-PO-KjA"/>
                             <constraint firstItem="bH1-su-AcB" firstAttribute="top" secondItem="uss-Jd-yYu" secondAttribute="bottom" constant="20" id="Ir9-3P-HOx"/>
+                            <constraint firstItem="yZh-aL-tox" firstAttribute="trailing" secondItem="bH1-su-AcB" secondAttribute="trailing" id="K2b-nB-UGd"/>
                             <constraint firstItem="huA-cu-qh6" firstAttribute="trailing" secondItem="I7v-JK-9Gq" secondAttribute="trailing" id="MIo-ow-ufB"/>
                             <constraint firstItem="uss-Jd-yYu" firstAttribute="top" secondItem="I7v-JK-9Gq" secondAttribute="bottom" constant="20" id="V7I-f7-QJ8"/>
                             <constraint firstItem="huA-cu-qh6" firstAttribute="centerX" secondItem="TpU-gO-2f1" secondAttribute="centerX" id="eWj-l9-2v1"/>
                             <constraint firstItem="I7v-JK-9Gq" firstAttribute="leading" secondItem="uss-Jd-yYu" secondAttribute="leading" id="gVo-Fg-lvc"/>
                             <constraint firstItem="huA-cu-qh6" firstAttribute="leading" secondItem="TpU-gO-2f1" secondAttribute="leadingMargin" constant="50" id="hSJ-to-JyH"/>
                             <constraint firstItem="uss-Jd-yYu" firstAttribute="trailing" secondItem="bH1-su-AcB" secondAttribute="trailing" id="iFO-Fg-oND"/>
+                            <constraint firstItem="yZh-aL-tox" firstAttribute="centerY" secondItem="TpU-gO-2f1" secondAttribute="centerY" id="nJn-Z0-KB4"/>
                             <constraint firstItem="huA-cu-qh6" firstAttribute="centerX" secondItem="TpU-gO-2f1" secondAttribute="centerX" id="q6T-GZ-BZo"/>
+                            <constraint firstItem="yZh-aL-tox" firstAttribute="leading" secondItem="bH1-su-AcB" secondAttribute="leading" id="zDP-QF-4Ej"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -114,10 +123,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RDW-ye-uz8">
-                                <rect key="frame" x="109" y="126" width="157" height="74"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="157" id="QBh-d3-Mbt"/>
-                                </constraints>
+                                <rect key="frame" x="144.5" y="126" width="86" height="74"/>
                                 <fontDescription key="fontDescription" type="system" weight="black" pointSize="30"/>
                                 <state key="normal" title="Close">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -127,10 +133,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z6O-wN-v2F">
-                                <rect key="frame" x="109" y="208" width="157" height="74"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="157" id="Kk7-7k-fl1"/>
-                                </constraints>
+                                <rect key="frame" x="150" y="220" width="75" height="48"/>
                                 <fontDescription key="fontDescription" type="system" weight="black" pointSize="30"/>
                                 <state key="normal" title="Back">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -142,9 +145,8 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="hm9-3w-Rz8" firstAttribute="top" secondItem="z6O-wN-v2F" secondAttribute="bottom" constant="385" id="5jg-46-zt0"/>
                             <constraint firstItem="z6O-wN-v2F" firstAttribute="centerX" secondItem="RDW-ye-uz8" secondAttribute="centerX" id="Aq2-4A-SwG"/>
-                            <constraint firstItem="z6O-wN-v2F" firstAttribute="top" secondItem="RDW-ye-uz8" secondAttribute="bottom" constant="8" symbolic="YES" id="HpF-cv-h0g"/>
+                            <constraint firstItem="z6O-wN-v2F" firstAttribute="top" secondItem="RDW-ye-uz8" secondAttribute="bottom" constant="20" id="HpF-cv-h0g"/>
                             <constraint firstItem="hm9-3w-Rz8" firstAttribute="top" secondItem="RDW-ye-uz8" secondAttribute="bottom" constant="467" id="XXL-3x-cuv"/>
                             <constraint firstItem="RDW-ye-uz8" firstAttribute="top" secondItem="UZf-Uh-hBV" secondAttribute="bottom" constant="106" id="czj-Rd-hJc"/>
                             <constraint firstItem="z6O-wN-v2F" firstAttribute="centerX" secondItem="hYT-Z2-yd1" secondAttribute="centerX" id="exX-Cj-dNA"/>

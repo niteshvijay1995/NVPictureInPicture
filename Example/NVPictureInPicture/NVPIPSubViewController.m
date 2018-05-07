@@ -23,9 +23,18 @@ static const CGFloat EdgeInset = 5;
   [super viewDidLoad];
   self.view.clipsToBounds = YES;
   self.delegate = self;
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(keyboardDidShow:)
+                                               name:UIKeyboardDidShowNotification
+                                             object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(keyboardDidHide:)
+                                               name:UIKeyboardDidHideNotification
+                                             object:nil];
+  self.compactModeEdgeInsets = [self edgeInsetsWithKeyboardHeight:0.0f];
 }
 
-- (UIEdgeInsets)edgeInsetsForDisplayModeCompact {
+- (UIEdgeInsets)edgeInsetsWithKeyboardHeight:(CGFloat)keyboardHeight {
   UIEdgeInsets safeAreaInsets;
   if (@available(iOS 11.0, *)) {
     safeAreaInsets = [UIApplication sharedApplication].keyWindow.safeAreaInsets;
@@ -34,7 +43,7 @@ static const CGFloat EdgeInset = 5;
   }
   return UIEdgeInsetsMake(EdgeInset + safeAreaInsets.top,
                           EdgeInset + safeAreaInsets.left,
-                          EdgeInset + safeAreaInsets.bottom,
+                          EdgeInset + safeAreaInsets.bottom + keyboardHeight,
                           EdgeInset + safeAreaInsets.right);
 }
 
@@ -43,8 +52,8 @@ static const CGFloat EdgeInset = 5;
   if (displayMode == NVPIPDisplayModeCompact) {
     return CGRectMake(2 * screenSize.width / 3 ,
                       2 * screenSize.height / 3,
-                      screenSize.width / 3,
-                      screenSize.width / 3);
+                      100,
+                      150);
   }
   return [super frameForDisplayMode:displayMode];
 }
@@ -73,13 +82,16 @@ static const CGFloat EdgeInset = 5;
   self.closeBlock();
 }
 
-- (void)updateViewWithTranslationPercentage:(CGFloat)percentage {
-  [super updateViewWithTranslationPercentage:percentage];
-  if (percentage <= 0.5) {
-    self.view.layer.cornerRadius = percentage * fmin(self.view.bounds.size.width, self.view.bounds.size.height);
-  } else {
-    self.view.layer.cornerRadius = 0.5 * fmin(self.view.bounds.size.width, self.view.bounds.size.height);
-  }
+- (void)keyboardDidShow:(NSNotification *)notification {
+  NSDictionary* info = [notification userInfo];
+  CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+  self.compactModeEdgeInsets = [self edgeInsetsWithKeyboardHeight:kbSize.height];
+  [self stickCompactViewToEdge];
+}
+
+- (void)keyboardDidHide:(NSNotification *)notification {
+  self.compactModeEdgeInsets = [self edgeInsetsWithKeyboardHeight:0.0f];
+  [self stickCompactViewToEdge];
 }
 
 @end
