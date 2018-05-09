@@ -11,7 +11,7 @@
 
 @interface NVPIPWindow : UIWindow
 
-@property (nonatomic, weak) id<NVPIPWindowDelegate> delegate;
+@property (nonatomic, weak) id<NVPIPWindowDelegate> NVDelegate;
 
 - (instancetype)initWithFrame:(CGRect)frame
                   windowLevel:(CGFloat)windowLevel;

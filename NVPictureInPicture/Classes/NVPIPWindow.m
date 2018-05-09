@@ -21,7 +21,7 @@
 }
 
 - (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {
-  return [self.delegate isEventPoint:point];
+  return [self.NVDelegate isEventPoint:point];
 }
 
 @end

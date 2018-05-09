@@ -22,12 +22,12 @@
   self.window = [[NVPIPWindow alloc] initWithFrame:[UIScreen mainScreen].bounds windowLevel:CGFLOAT_MAX];
   self.viewController = viewController;
   self.window.rootViewController = self.viewController;
-  self.window.delegate = self;
+  self.window.NVDelegate = self;
   [self makeWindowVisible];
 }
 
 - (void)dismissPresentedViewControllerWithCompletion: (void (^ __nullable)(void))completion {
-  self.window.delegate = nil;
+  self.window.NVDelegate = nil;
   self.window = nil;
   self.viewController = nil;
   if (completion != NULL) {
