@@ -11,12 +11,10 @@
 		41F056FB1600923F7380B4948D14441C /* Pods-NVPictureInPicture_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E88ADABF79C3289FEA6A9684A3629E1 /* Pods-NVPictureInPicture_Tests-dummy.m */; };
 		57EA5849B5BEEFB7F24ABD9B5886CE9C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
 		A87BE58806EBDD2381359FDB89280F39 /* NVPictureInPicture.h in Headers */ = {isa = PBXBuildFile; fileRef = A29F0B71584B0E05FA8CBD777DB5B7C9 /* NVPictureInPicture.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		AD8F1A79CE7CE8C9C0F92723B24E6E0E /* NVPIPWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = D3AC85844D14A3AE310841A946B18533 /* NVPIPWindow.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C3637D5A13EFF223725473663546EFE6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
 		C6DF41B8673DA2BC8707102A661CB6C0 /* NVPIPViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = B279BAD0416D6F3DDA1A50F46C2E7E75 /* NVPIPViewController.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		C93E6B95366149164E0EAD64DBE958FA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
 		CEB2E93C3261F2AD4E8A3D2057AD05DA /* Pods-NVPictureInPicture_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7200BFC8FF3ED918B17FA4FF4DAC882A /* Pods-NVPictureInPicture_Example-dummy.m */; };
-		EEDB1F534D896D7EC2AF4B19F7186BE9 /* NVPIPWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 8E7F12399C4D4EDED7F529016C32EA1E /* NVPIPWindow.m */; };
 		EF0DB68F5BE8D29DB7C3B1B15882CB8C /* NVPictureInPicture-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 2DC63684371E610AA534318E0AA803F8 /* NVPictureInPicture-dummy.m */; };
 		FC668B8B67E345BDAFA8605F2602F5D6 /* NVPIPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D93B2547A5EB50B78AF0D0B1CE11D76B /* NVPIPViewController.m */; };
 /* End PBXBuildFile section */
@@ -49,7 +47,6 @@
 		73B815B919B882EF680EBB161E256774 /* libPods-NVPictureInPicture_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NVPictureInPicture_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		87A4C616CF8DDB949044FFD78A3CA669 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		8E783A7BA99E832F80678A3F8915536C /* NVPictureInPicture.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = NVPictureInPicture.xcconfig; sourceTree = "<group>"; };
-		8E7F12399C4D4EDED7F529016C32EA1E /* NVPIPWindow.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NVPIPWindow.m; path = NVPictureInPicture/Classes/NVPIPWindow.m; sourceTree = "<group>"; };
 		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9A984DE076AEE924BD33CE55081047C4 /* Pods-NVPictureInPicture_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-NVPictureInPicture_Example-frameworks.sh"; sourceTree = "<group>"; };
 		A1C28CE8C3236CB9F7B2945EA12915F6 /* libNVPictureInPicture.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNVPictureInPicture.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -59,7 +56,6 @@
 		C4D2AAD1551403CE6DA821D4CEB179CD /* Pods-NVPictureInPicture_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NVPictureInPicture_Example.release.xcconfig"; sourceTree = "<group>"; };
 		D0D396D92B311DC450C9C20A9C59184F /* NVPictureInPicture-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NVPictureInPicture-prefix.pch"; sourceTree = "<group>"; };
 		D37996EE384249B5F64750E1A10CCB38 /* NVPictureInPicture.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NVPictureInPicture.m; path = NVPictureInPicture/Classes/NVPictureInPicture.m; sourceTree = "<group>"; };
-		D3AC85844D14A3AE310841A946B18533 /* NVPIPWindow.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NVPIPWindow.h; path = NVPictureInPicture/Classes/NVPIPWindow.h; sourceTree = "<group>"; };
 		D93B2547A5EB50B78AF0D0B1CE11D76B /* NVPIPViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NVPIPViewController.m; path = NVPictureInPicture/Classes/NVPIPViewController.m; sourceTree = "<group>"; };
 		DA82AC56DADADE46085CF4BEF671362E /* NVPictureInPicture.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; path = NVPictureInPicture.podspec; sourceTree = "<group>"; };
 		F80D49804C6492735075C566B043CF58 /* Pods-NVPictureInPicture_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-NVPictureInPicture_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
@@ -132,8 +128,6 @@
 				D37996EE384249B5F64750E1A10CCB38 /* NVPictureInPicture.m */,
 				B279BAD0416D6F3DDA1A50F46C2E7E75 /* NVPIPViewController.h */,
 				D93B2547A5EB50B78AF0D0B1CE11D76B /* NVPIPViewController.m */,
-				D3AC85844D14A3AE310841A946B18533 /* NVPIPWindow.h */,
-				8E7F12399C4D4EDED7F529016C32EA1E /* NVPIPWindow.m */,
 				9806C2FBB9473307B404F238E79CF683 /* Pod */,
 				62E5C1C625F8719D4F493C0B44E4A42C /* Support Files */,
 			);
@@ -223,7 +217,6 @@
 			files = (
 				A87BE58806EBDD2381359FDB89280F39 /* NVPictureInPicture.h in Headers */,
 				C6DF41B8673DA2BC8707102A661CB6C0 /* NVPIPViewController.h in Headers */,
-				AD8F1A79CE7CE8C9C0F92723B24E6E0E /* NVPIPWindow.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -332,7 +325,6 @@
 				EF0DB68F5BE8D29DB7C3B1B15882CB8C /* NVPictureInPicture-dummy.m in Sources */,
 				0947DA8A9B256EE0A94160E7DF3CE42D /* NVPictureInPicture.m in Sources */,
 				FC668B8B67E345BDAFA8605F2602F5D6 /* NVPIPViewController.m in Sources */,
-				EEDB1F534D896D7EC2AF4B19F7186BE9 /* NVPIPWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,12 +6,10 @@
 //
 
 #import "NVPictureInPicture.h"
-#import "NVPIPWindow.h"
 #import "NVPIPViewController.h"
 
-@interface NVPictureInPicture() <NVPIPWindowDelegate>
+@interface NVPictureInPicture()
 
-@property (nonatomic) NVPIPWindow *window;
 @property (nonatomic) NVPIPViewController *viewController;
 
 @end
@@ -19,34 +17,17 @@
 @implementation NVPictureInPicture
 
 - (void)presentNVPIPViewController:(NVPIPViewController *)viewController {
-  self.window = [[NVPIPWindow alloc] initWithFrame:[UIScreen mainScreen].bounds windowLevel:CGFLOAT_MAX];
   self.viewController = viewController;
-  self.window.rootViewController = self.viewController;
-  self.window.NVDelegate = self;
-  [self makeWindowVisible];
+  [UIApplication.sharedApplication.keyWindow addSubview:self.viewController.view];
+  [UIApplication.sharedApplication.keyWindow.rootViewController addChildViewController:self.viewController];
 }
 
 - (void)dismissPresentedViewControllerWithCompletion: (void (^ __nullable)(void))completion {
-  self.window.NVDelegate = nil;
-  self.window = nil;
+  [self.viewController.view removeFromSuperview];
   self.viewController = nil;
   if (completion != NULL) {
     completion();
   }
-}
-
-- (void)makeWindowVisible {
-  UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
-  [self.window makeKeyAndVisible];
-  if (keyWindow) {
-    [keyWindow makeKeyWindow];
-  }
-}
-
-#pragma mark - NVPIPWindowDelegate
-
-- (BOOL)isEventPoint:(CGPoint)point {
-  return [self.viewController shouldReceivePoint:point];
 }
 
 @end
