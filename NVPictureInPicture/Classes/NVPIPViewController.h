@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, NVPIPDisplayMode) {
 
 - (BOOL)shouldReceivePoint:(CGPoint)point;
 
-- (void)moveCompactModeViewViewWithOffset:(CGPoint)offset animated:(BOOL)animated;
+- (void)moveCompactModeViewWithOffset:(CGPoint)offset animated:(BOOL)animated;
 
 @end
 

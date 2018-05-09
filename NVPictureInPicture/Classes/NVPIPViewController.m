@@ -167,7 +167,7 @@ static const UIEdgeInsets DefaultCompactModeEdgeInsets = {10,10,10,10};
   }];
 }
 
-- (void)moveCompactModeViewViewWithOffset:(CGPoint)offset animated:(BOOL)animated {
+- (void)moveCompactModeViewWithOffset:(CGPoint)offset animated:(BOOL)animated {
   if (self.displayMode == NVPIPDisplayModeExpanded) {
     NSLog(@"Warning: moveCompactModeViewViewWithOffset: called on active display mode expanded.");
     return;
