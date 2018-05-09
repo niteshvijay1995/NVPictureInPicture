@@ -79,7 +79,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Comments" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yZh-aL-tox">
-                                <rect key="frame" x="66" y="318" width="243" height="30"/>
+                                <rect key="frame" x="66" y="300" width="243" height="30"/>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -96,11 +96,11 @@
                             <constraint firstItem="yZh-aL-tox" firstAttribute="trailing" secondItem="bH1-su-AcB" secondAttribute="trailing" id="K2b-nB-UGd"/>
                             <constraint firstItem="huA-cu-qh6" firstAttribute="trailing" secondItem="I7v-JK-9Gq" secondAttribute="trailing" id="MIo-ow-ufB"/>
                             <constraint firstItem="uss-Jd-yYu" firstAttribute="top" secondItem="I7v-JK-9Gq" secondAttribute="bottom" constant="20" id="V7I-f7-QJ8"/>
+                            <constraint firstItem="yZh-aL-tox" firstAttribute="top" secondItem="bH1-su-AcB" secondAttribute="bottom" constant="20" id="eM4-dt-cry"/>
                             <constraint firstItem="huA-cu-qh6" firstAttribute="centerX" secondItem="TpU-gO-2f1" secondAttribute="centerX" id="eWj-l9-2v1"/>
                             <constraint firstItem="I7v-JK-9Gq" firstAttribute="leading" secondItem="uss-Jd-yYu" secondAttribute="leading" id="gVo-Fg-lvc"/>
                             <constraint firstItem="huA-cu-qh6" firstAttribute="leading" secondItem="TpU-gO-2f1" secondAttribute="leadingMargin" constant="50" id="hSJ-to-JyH"/>
                             <constraint firstItem="uss-Jd-yYu" firstAttribute="trailing" secondItem="bH1-su-AcB" secondAttribute="trailing" id="iFO-Fg-oND"/>
-                            <constraint firstItem="yZh-aL-tox" firstAttribute="centerY" secondItem="TpU-gO-2f1" secondAttribute="centerY" id="nJn-Z0-KB4"/>
                             <constraint firstItem="huA-cu-qh6" firstAttribute="centerX" secondItem="TpU-gO-2f1" secondAttribute="centerX" id="q6T-GZ-BZo"/>
                             <constraint firstItem="yZh-aL-tox" firstAttribute="leading" secondItem="bH1-su-AcB" secondAttribute="leading" id="zDP-QF-4Ej"/>
                         </constraints>
