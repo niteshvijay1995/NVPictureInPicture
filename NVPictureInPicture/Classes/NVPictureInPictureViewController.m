@@ -239,6 +239,7 @@ static const CGFloat AnimationDuration = 0.2f;
   __weak typeof(self) weakSelf = self;
   [UIView animateWithDuration:AnimationDuration animations:^{
     [weakSelf updateViewWithTranslationPercentage:1.0f];
+    [weakSelf.view layoutIfNeeded];
   } completion:^(BOOL finished) {
     if (finished) {
       [weakSelf.view addGestureRecognizer:self.pipTapGesture];
@@ -263,6 +264,7 @@ static const CGFloat AnimationDuration = 0.2f;
   __weak typeof(self) weakSelf = self;
   [UIView animateWithDuration:AnimationDuration animations:^{
     [weakSelf updateViewWithTranslationPercentage:0.0f];
+    [weakSelf.view layoutIfNeeded];
   } completion:^(BOOL finished) {
     if (finished) {
       [weakSelf.view removeGestureRecognizer:self.pipTapGesture];
