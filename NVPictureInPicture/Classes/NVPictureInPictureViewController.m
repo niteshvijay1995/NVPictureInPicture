@@ -40,14 +40,12 @@ static const CGFloat AnimationDuration = 0.2f;
 @implementation NVPictureInPictureViewController
 
 - (void)viewDidLoad {
-  self.pipEdgeInsets = [self pictureInPictureEdgeInsets];
-  self.pipSize = [self pictureInPictureSize];
-  self.fullScreenSize = [UIScreen mainScreen].bounds.size;
-  self.fullScreenCenter = CGPointMake(self.fullScreenSize.width / 2, self.fullScreenSize.height / 2);
+  [self loadValues];
+  self.view.bounds = CGRectMake(0, 0, self.fullScreenSize.width, self.fullScreenSize.height);
+  self.view.center = self.fullScreenCenter;
   self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
   [self.view addGestureRecognizer:self.panGesture];
   self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-  [self setPIPCenterWithVerticalPosition:bottom horizontalPosition:right];
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(keyboardDidShow:)
                                                name:UIKeyboardDidShowNotification
@@ -56,6 +54,18 @@ static const CGFloat AnimationDuration = 0.2f;
                                            selector:@selector(keyboardDidHide:)
                                                name:UIKeyboardDidHideNotification
                                              object:nil];
+}
+
+- (void)loadValues {
+  self.pipEdgeInsets = [self pictureInPictureEdgeInsets];
+  self.pipSize = [self pictureInPictureSize];
+  self.fullScreenSize = [UIScreen mainScreen].bounds.size;
+  self.fullScreenCenter = CGPointMake(self.fullScreenSize.width / 2, self.fullScreenSize.height / 2);
+  [self setPIPCenterWithVerticalPosition:bottom horizontalPosition:right];
+}
+
+- (void)reload {
+  [self loadValues];
 }
 
 - (void)dealloc {

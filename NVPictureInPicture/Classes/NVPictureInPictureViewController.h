@@ -15,6 +15,8 @@
 
 @property(nonatomic, readonly, getter=isPictureInPictureActive) BOOL pictureInPictureActive;
 
+- (void)reload;
+
 - (void)startPictureInPicture;
 
 - (void)stopPictureInPicture;
