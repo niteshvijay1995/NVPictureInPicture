@@ -6,17 +6,17 @@
 //
 
 #import "NVPictureInPicture.h"
-#import "NVPIPViewController.h"
+#import "NVPictureInPictureViewController.h"
 
 @interface NVPictureInPicture()
 
-@property (nonatomic) NVPIPViewController *viewController;
+@property (nonatomic) NVPictureInPictureViewController *viewController;
 
 @end
 
 @implementation NVPictureInPicture
 
-- (void)presentNVPIPViewController:(NVPIPViewController *)viewController {
+- (void)presentNVPIPViewController:(NVPictureInPictureViewController *)viewController {
   self.viewController = viewController;
   [UIApplication.sharedApplication.keyWindow addSubview:self.viewController.view];
   [UIApplication.sharedApplication.keyWindow.rootViewController addChildViewController:self.viewController];

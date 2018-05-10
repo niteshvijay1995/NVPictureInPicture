@@ -10,7 +10,7 @@
 
 static const CGFloat EdgeInset = 5;
 
-@interface NVPIPSubViewController () <NVPIPViewControllerDelegate>
+@interface NVPIPSubViewController () <NVPictureInPictureViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
@@ -23,75 +23,26 @@ static const CGFloat EdgeInset = 5;
   [super viewDidLoad];
   self.view.clipsToBounds = YES;
   self.delegate = self;
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(keyboardDidShow:)
-                                               name:UIKeyboardDidShowNotification
-                                             object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(keyboardDidHide:)
-                                               name:UIKeyboardDidHideNotification
-                                             object:nil];
-  self.compactModeEdgeInsets = [self edgeInsetsWithKeyboardHeight:0.0f];
 }
 
-- (UIEdgeInsets)edgeInsetsWithKeyboardHeight:(CGFloat)keyboardHeight {
-  UIEdgeInsets safeAreaInsets;
-  if (@available(iOS 11.0, *)) {
-    safeAreaInsets = [UIApplication sharedApplication].keyWindow.safeAreaInsets;
-  } else {
-    safeAreaInsets = UIEdgeInsetsMake(0, 0, 0, 0);
-  }
-  return UIEdgeInsetsMake(EdgeInset + safeAreaInsets.top,
-                          EdgeInset + safeAreaInsets.left,
-                          EdgeInset + safeAreaInsets.bottom + keyboardHeight,
-                          EdgeInset + safeAreaInsets.right);
+
+- (void)pictureInPictureViewControllerWillStartPictureInPicture:(NVPictureInPictureViewController *)pictureInPictureViewController {
+  self.closeButton.alpha = 0;
+  self.backButton.alpha = 0;
 }
 
-- (CGRect)frameForDisplayMode:(NVPIPDisplayMode)displayMode {
-  CGSize screenSize = [UIScreen mainScreen].bounds.size;
-  if (displayMode == NVPIPDisplayModeCompact) {
-    return CGRectMake(2 * screenSize.width / 3 ,
-                      2 * screenSize.height / 3,
-                      100,
-                      150);
-  }
-  return [super frameForDisplayMode:displayMode];
-}
-
-- (void)pipViewController:(NVPIPViewController *)viewController willStartTransitionToDisplayMode:(NVPIPDisplayMode)displayMode {
-  if (displayMode == NVPIPDisplayModeCompact) {
-    self.closeButton.alpha = 0;
-    self.backButton.alpha = 0;
-  }
-}
-
-- (void)pipViewController:(NVPIPViewController *)viewController didChangeToDisplayMode:(NVPIPDisplayMode)displayMode {
-  if (displayMode == NVPIPDisplayModeExpanded) {
-    self.closeButton.alpha = 1;
-    self.backButton.alpha = 1;
-  }
+- (void)pictureInPictureViewControllerDidStopPictureInPicture:(NVPictureInPictureViewController *)pictureInPictureViewController {
+  self.closeButton.alpha = 1;
+  self.backButton.alpha = 1;
 }
 
 - (IBAction)back:(id)sender {
   self.closeButton.alpha = 0;
   self.backButton.alpha = 0;
-  [self setDisplayMode:NVPIPDisplayModeCompact animated:YES];
+  [self startPictureInPicture];
 }
 
 - (IBAction)close:(id)sender {
   self.closeBlock();
 }
-
-- (void)keyboardDidShow:(NSNotification *)notification {
-  NSDictionary* info = [notification userInfo];
-  CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
-  self.compactModeEdgeInsets = [self edgeInsetsWithKeyboardHeight:kbSize.height];
-  [self stickCompactViewToEdge];
-}
-
-- (void)keyboardDidHide:(NSNotification *)notification {
-  self.compactModeEdgeInsets = [self edgeInsetsWithKeyboardHeight:0.0f];
-  [self stickCompactViewToEdge];
-}
-
 @end

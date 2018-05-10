@@ -20,6 +20,7 @@ static const UIEdgeInsets DefaultCompactModeEdgeInsets = {10,10,10,10};
 @property (nonatomic) UITapGestureRecognizer *tapGesture;
 @property (nonatomic) CGRect compactModeFrame;
 @property (nonatomic) CGRect expandedModeFrame;
+@property (nonatomic) CGFloat keyboardHeight;
 
 @end
 
@@ -35,6 +36,18 @@ static const UIEdgeInsets DefaultCompactModeEdgeInsets = {10,10,10,10};
   [self.view addGestureRecognizer:self.panGesture];
   self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
   [self setDisplayMode:NVPIPDisplayModeExpanded animated:NO];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(keyboardDidShow:)
+                                               name:UIKeyboardDidShowNotification
+                                             object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self
+                                           selector:@selector(keyboardDidHide:)
+                                               name:UIKeyboardDidHideNotification
+                                             object:nil];
+}
+
+- (void)dealloc {
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (CGRect)frameForDisplayMode:(NVPIPDisplayMode)displayMode {
@@ -196,8 +209,8 @@ static const UIEdgeInsets DefaultCompactModeEdgeInsets = {10,10,10,10};
   }
   if (point.y < self.compactModeEdgeInsets.top + size.height / 2) {
     point.y = self.compactModeEdgeInsets.top + size.height / 2;
-  }else if (point.y > screenSize.height - size.height / 2 - self.compactModeEdgeInsets.bottom) {
-    point.y = screenSize.height - size.height / 2 - self.compactModeEdgeInsets.bottom;
+  }else if (point.y > screenSize.height - size.height / 2 - self.compactModeEdgeInsets.bottom - self.keyboardHeight) {
+    point.y = screenSize.height - size.height / 2 - self.compactModeEdgeInsets.bottom - self.keyboardHeight;
   }
   return point;
 }
@@ -223,5 +236,16 @@ static const UIEdgeInsets DefaultCompactModeEdgeInsets = {10,10,10,10};
 - (BOOL)shouldReceivePoint:(CGPoint)point {
   return CGRectContainsPoint(self.view.frame, point);
 }
+
+- (void)keyboardDidShow:(NSNotification *)notification {
+  NSDictionary* info = [notification userInfo];
+  self.keyboardHeight = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+  [self stickCompactViewToEdge];
+}
+
+- (void)keyboardDidHide:(NSNotification *)notification {
+  self.keyboardHeight = 0.0f;
+}
+
 
 @end

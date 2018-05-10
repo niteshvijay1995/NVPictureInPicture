@@ -27,7 +27,7 @@
 
 @end
 
-@protocol NVPictureInPictureViewControllerDelegate
+@protocol NVPictureInPictureViewControllerDelegate <NSObject>
 
 @optional
 

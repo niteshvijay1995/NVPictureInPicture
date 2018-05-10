@@ -6,9 +6,9 @@
 //  Copyright © 2018 niteshvijay1995. All rights reserved.
 //
 
-#import "NVPIPViewController.h"
+#import "NVPictureInPictureViewController.h"
 
-@interface NVPIPSubViewController : NVPIPViewController
+@interface NVPIPSubViewController : NVPictureInPictureViewController
 
 @property (nonatomic) void(^closeBlock)(void);
 
