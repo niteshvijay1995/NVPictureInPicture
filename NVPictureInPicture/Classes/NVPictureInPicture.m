@@ -17,6 +17,9 @@
 @implementation NVPictureInPicture
 
 - (void)presentNVPIPViewController:(NVPictureInPictureViewController *)viewController {
+  if (self.viewController != nil) {
+    [self dismissPresentedViewControllerWithCompletion:nil];
+  }
   self.viewController = viewController;
   [UIApplication.sharedApplication.keyWindow addSubview:self.viewController.view];
   [UIApplication.sharedApplication.keyWindow.rootViewController addChildViewController:self.viewController];
