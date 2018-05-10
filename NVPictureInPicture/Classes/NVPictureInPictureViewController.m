@@ -54,6 +54,7 @@ static const CGFloat AnimationDuration = 0.2f;
                                            selector:@selector(keyboardDidHide:)
                                                name:UIKeyboardDidHideNotification
                                              object:nil];
+  [UIApplication.sharedApplication sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
 }
 
 - (void)loadValues {
@@ -245,6 +246,7 @@ static const CGFloat AnimationDuration = 0.2f;
     [self.delegate pictureInPictureViewControllerWillStopPictureInPicture:self];
   }
   
+  [UIApplication.sharedApplication sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
   self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   
   __weak typeof(self) weakSelf = self;
