@@ -8,13 +8,13 @@
 #import "NVPictureInPictureViewController.h"
 
 typedef NS_ENUM(NSInteger, PictureInPictureVerticalPosition) {
-  top,
-  bottom
+  top = -1,
+  bottom = 1
 };
 
 typedef NS_ENUM(NSInteger, PictureInPictureHorizontalPosition) {
-  left,
-  right
+  left = -1,
+  right = 1
 };
 
 static const CGSize DefaultPictureInPictureSize = {100, 150};
@@ -27,7 +27,7 @@ static const CGFloat AnimationDuration = 0.2f;
 
 @property (nonatomic) BOOL pictureInPictureActive;
 @property (nonatomic) UIPanGestureRecognizer *panGesture;
-@property (nonatomic) UITapGestureRecognizer *tapGesture;
+@property (nonatomic) UITapGestureRecognizer *pipTapGesture;
 @property (nonatomic) CGSize pipSize;
 @property (nonatomic) CGSize fullScreenSize;
 @property (nonatomic) UIEdgeInsets pipEdgeInsets;
@@ -45,7 +45,7 @@ static const CGFloat AnimationDuration = 0.2f;
   self.view.center = self.fullScreenCenter;
   self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
   [self.view addGestureRecognizer:self.panGesture];
-  self.tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+  self.pipTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(keyboardDidShow:)
                                                name:UIKeyboardDidShowNotification
@@ -105,15 +105,26 @@ static const CGFloat AnimationDuration = 0.2f;
 }
 
 - (void)handlePanInFullScreen:(UIPanGestureRecognizer *)gestureRecognizer {
+  static NSInteger yMultiplier;
+  static NSInteger xMultiplier;
   if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
     [self.panGesture setTranslation:CGPointZero inView:self.view];
+    yMultiplier = 0;
+    xMultiplier = 0;
     if (self.delegate != nil
         && [self.delegate respondsToSelector:@selector(pictureInPictureViewControllerWillStartPictureInPicture:)]) {
       [self.delegate pictureInPictureViewControllerWillStartPictureInPicture:self];
     }
   } else {
     CGPoint translation = [gestureRecognizer translationInView:self.view];
-    CGFloat percentage = PanSensitivity * fabs(translation.y / (self.fullScreenSize.height - self.pipSize.height));
+    if (yMultiplier == 0) {
+      yMultiplier = translation.y / fabs(translation.y);
+      xMultiplier = translation.x / fabs(translation.x);
+      xMultiplier = xMultiplier == 0 ? yMultiplier : xMultiplier;
+      [self setPIPCenterWithVerticalPosition:yMultiplier horizontalPosition:xMultiplier];
+    }
+    CGFloat percentage = PanSensitivity * yMultiplier * (translation.y / (self.fullScreenSize.height - self.pipSize.height));
+    percentage = percentage < 0.0 ? 0.0 : percentage;
     if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
       if (percentage < 1.0) {
         [self updateViewWithTranslationPercentage:percentage];
@@ -230,7 +241,7 @@ static const CGFloat AnimationDuration = 0.2f;
     [weakSelf updateViewWithTranslationPercentage:1.0f];
   } completion:^(BOOL finished) {
     if (finished) {
-      [weakSelf.view addGestureRecognizer:self.tapGesture];
+      [weakSelf.view addGestureRecognizer:self.pipTapGesture];
       weakSelf.pictureInPictureActive = YES;
       if (weakSelf.delegate != nil
           && [weakSelf.delegate respondsToSelector:@selector(pictureInPictureViewControllerDidStartPictureInPicture:)]) {
@@ -254,7 +265,7 @@ static const CGFloat AnimationDuration = 0.2f;
     [weakSelf updateViewWithTranslationPercentage:0.0f];
   } completion:^(BOOL finished) {
     if (finished) {
-      [weakSelf.view removeGestureRecognizer:self.tapGesture];
+      [weakSelf.view removeGestureRecognizer:self.pipTapGesture];
       weakSelf.pictureInPictureActive = NO;
       if (weakSelf.delegate != nil
           && [weakSelf.delegate respondsToSelector:@selector(pictureInPictureViewControllerDidStopPictureInPicture:)]) {
