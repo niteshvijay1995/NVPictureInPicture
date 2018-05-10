@@ -66,6 +66,13 @@ static const CGFloat AnimationDuration = 0.2f;
 
 - (void)reload {
   [self loadValues];
+  if (self.isPictureInPictureActive) {
+    self.view.bounds = CGRectMake(0, 0, self.pipSize.width, self.pipSize.height);
+    [self stickPictureInPictureToEdge];
+  } else {
+    self.view.bounds = CGRectMake(0, 0, self.fullScreenSize.width, self.fullScreenSize.height);
+    self.view.center = self.fullScreenCenter;
+  }
 }
 
 - (void)dealloc {
@@ -214,6 +221,9 @@ static const CGFloat AnimationDuration = 0.2f;
       && [self.delegate respondsToSelector:@selector(pictureInPictureViewControllerWillStartPictureInPicture:)]) {
     [self.delegate pictureInPictureViewControllerWillStartPictureInPicture:self];
   }
+  
+  self.view.autoresizingMask = UIViewAutoresizingNone;
+  
   __weak typeof(self) weakSelf = self;
   [UIView animateWithDuration:AnimationDuration animations:^{
     [weakSelf updateViewWithTranslationPercentage:1.0f];
@@ -234,6 +244,9 @@ static const CGFloat AnimationDuration = 0.2f;
       && [self.delegate respondsToSelector:@selector(pictureInPictureViewControllerWillStopPictureInPicture:)]) {
     [self.delegate pictureInPictureViewControllerWillStopPictureInPicture:self];
   }
+  
+  self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+  
   __weak typeof(self) weakSelf = self;
   [UIView animateWithDuration:AnimationDuration animations:^{
     [weakSelf updateViewWithTranslationPercentage:0.0f];
@@ -261,6 +274,21 @@ static const CGFloat AnimationDuration = 0.2f;
 
 - (void)keyboardDidHide:(NSNotification *)notification {
   self.keyboardHeight = 0.0f;
+}
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+  [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+    if (self.isPictureInPictureActive) {
+      CGPoint centerRatio = CGPointMake((self.view.center.x - self.pipSize.width / 2) / (self.fullScreenSize.width - self.pipSize.width),
+                                        (self.view.center.y - self.pipSize.height / 2) / (self.fullScreenSize.height - self.pipSize.height));
+      CGPoint newCenter;
+      newCenter.x = centerRatio.x * size.width;
+      newCenter.y = centerRatio.y * size.height;
+      self.view.center = [self validCenterPoint:newCenter withSize:self.view.bounds.size];
+    }
+  } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
+    [self reload];
+  }];
 }
 
 @end
