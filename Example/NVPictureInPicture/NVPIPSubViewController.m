@@ -8,8 +8,6 @@
 
 #import "NVPIPSubViewController.h"
 
-static const CGFloat EdgeInset = 5;
-
 @interface NVPIPSubViewController () <NVPictureInPictureViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
