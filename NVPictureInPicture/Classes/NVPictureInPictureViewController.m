@@ -49,12 +49,12 @@ static const CGFloat AnimationDamping = 1.0f;
   [self.view addGestureRecognizer:self.panGesture];
   self.pipTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(keyboardDidShow:)
-                                               name:UIKeyboardDidShowNotification
+                                           selector:@selector(keyboardWillShow:)
+                                               name:UIKeyboardWillShowNotification
                                              object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self
-                                           selector:@selector(keyboardDidHide:)
-                                               name:UIKeyboardDidHideNotification
+                                           selector:@selector(keyboardWillHide:)
+                                               name:UIKeyboardWillHideNotification
                                              object:nil];
   [UIApplication.sharedApplication sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
 }
@@ -67,20 +67,11 @@ static const CGFloat AnimationDamping = 1.0f;
   [self setPIPCenterWithVerticalPosition:bottom horizontalPosition:right];
 }
 
-- (void)reload {
-  [self loadValues];
-  if (self.isPictureInPictureActive) {
-    self.view.bounds = CGRectMake(0, 0, self.pipSize.width, self.pipSize.height);
-    [self stickPictureInPictureToEdge];
-  } else {
-    self.view.bounds = CGRectMake(0, 0, self.fullScreenSize.width, self.fullScreenSize.height);
-    self.view.center = self.fullScreenCenter;
-  }
-}
-
 - (void)dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+#pragma mark Datasource Methods
 
 - (UIEdgeInsets)pictureInPictureEdgeInsets {
   if (@available(iOS 11.0, *)) {
@@ -97,6 +88,7 @@ static const CGFloat AnimationDamping = 1.0f;
   return DefaultPictureInPictureSize;
 }
 
+#pragma mark Pan Gesture Handler
 
 - (void)handlePan:(UIPanGestureRecognizer *)gestureRecognizer {
   if (self.isPictureInPictureActive) {
@@ -142,37 +134,6 @@ static const CGFloat AnimationDamping = 1.0f;
   }
 }
 
-- (void)setDisplayModeWithTranslationPercentage:(CGFloat)percentage velocity:(CGFloat)velocity {
-  CGFloat speed = [self normalizeSpeedWithVelocity:velocity withPercentage:percentage];
-  CGFloat normalizePercentage = [self normalizePercentage:percentage WithVelocity:velocity];
-  if (normalizePercentage > ThresholdTranslationPercentageForPictureInPicture) {
-    [self translateViewToPictureInPictureWithInitialSpeed:speed];
-  } else {
-    [self stopPictureInPicture];
-  }
-}
-
-- (CGFloat)normalizePercentage:(CGFloat)percentage WithVelocity:(CGFloat)velocity {
-  return percentage + (velocity * FreeFlowTimeAfterPan) / (self.fullScreenSize.height - self.pipSize.height);
-}
-
-- (CGFloat)normalizeSpeedWithVelocity:(CGFloat)velocity withPercentage:(CGFloat)percentage {
-  return fabs(velocity / (self.fullScreenSize.height - self.pipSize.height));
-}
-
-- (void)updateViewWithTranslationPercentage:(CGFloat)percentage {
-  CGSize sizeDifference = CGSizeMake(self.fullScreenSize.width - self.pipSize.width,
-                                     self.fullScreenSize.height - self.pipSize.height);
-  CGPoint centerDifference = CGPointMake(self.fullScreenCenter.x - self.pipCenter.x,
-                                         self.fullScreenCenter.y - self.pipCenter.y);
-  self.view.bounds = CGRectMake(0,
-                                0,
-                                self.fullScreenSize.width - sizeDifference.width * percentage,
-                                self.fullScreenSize.height - sizeDifference.height * percentage);
-  self.view.center = CGPointMake(self.fullScreenCenter.x - centerDifference.x * percentage,
-                                 self.fullScreenCenter.y - centerDifference.y * percentage);
-}
-
 - (void)handlePanInPictureInPicture:(UIPanGestureRecognizer *)gestureRecognizer {
   if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
     CGPoint translation = [gestureRecognizer translationInView:self.view];
@@ -202,9 +163,42 @@ static const CGFloat AnimationDamping = 1.0f;
   }
 }
 
+#pragma mark Helper Methods
+
+- (CGFloat)normalizePercentage:(CGFloat)percentage WithVelocity:(CGFloat)velocity {
+  return percentage + (velocity * FreeFlowTimeAfterPan) / (self.fullScreenSize.height - self.pipSize.height);
+}
+
+- (CGFloat)normalizeSpeedWithVelocity:(CGFloat)velocity withPercentage:(CGFloat)percentage {
+  return fabs(velocity / (self.fullScreenSize.height - self.pipSize.height));
+}
+
+- (void)setDisplayModeWithTranslationPercentage:(CGFloat)percentage velocity:(CGFloat)velocity {
+  CGFloat speed = [self normalizeSpeedWithVelocity:velocity withPercentage:percentage];
+  CGFloat normalizePercentage = [self normalizePercentage:percentage WithVelocity:velocity];
+  if (normalizePercentage > ThresholdTranslationPercentageForPictureInPicture) {
+    [self translateViewToPictureInPictureWithInitialSpeed:speed];
+  } else {
+    [self stopPictureInPicture];
+  }
+}
+
+- (void)updateViewWithTranslationPercentage:(CGFloat)percentage {
+  CGSize sizeDifference = CGSizeMake(self.fullScreenSize.width - self.pipSize.width,
+                                     self.fullScreenSize.height - self.pipSize.height);
+  CGPoint centerDifference = CGPointMake(self.fullScreenCenter.x - self.pipCenter.x,
+                                         self.fullScreenCenter.y - self.pipCenter.y);
+  self.view.bounds = CGRectMake(0,
+                                0,
+                                self.fullScreenSize.width - sizeDifference.width * percentage,
+                                self.fullScreenSize.height - sizeDifference.height * percentage);
+  self.view.center = CGPointMake(self.fullScreenCenter.x - centerDifference.x * percentage,
+                                 self.fullScreenCenter.y - centerDifference.y * percentage);
+}
+
 - (void)stickPictureInPictureToEdge {
   if (!self.isPictureInPictureActive) {
-    NSLog(@"Warning: stickPictureInPictureToEdge called when Picture-In-Picture is inactive.");
+    NSLog(@"[NVPictureInPicture] Warning: stickPictureInPictureToEdge called when Picture-In-Picture is inactive.");
     return;
   }
   [UIView animateWithDuration:AnimationDuration animations:^{
@@ -245,6 +239,8 @@ static const CGFloat AnimationDamping = 1.0f;
   self.pipCenter = center;
 }
 
+#pragma mark Tap Gesture Handler
+
 - (void)handleTap:(UIGestureRecognizer *)gestureRecognizer {
   if (self.isPictureInPictureActive) {
     if (self.delegate != nil
@@ -254,6 +250,8 @@ static const CGFloat AnimationDamping = 1.0f;
     [self stopPictureInPicture];
   }
 }
+
+#pragma mark Translation Methods
 
 - (void)translateViewToPictureInPictureWithInitialSpeed:(CGFloat)speed {
   self.view.autoresizingMask = UIViewAutoresizingNone;
@@ -278,20 +276,7 @@ static const CGFloat AnimationDamping = 1.0f;
   }];
 }
 
-- (void)startPictureInPicture {
-  if (self.delegate != nil
-      && [self.delegate respondsToSelector:@selector(pictureInPictureViewControllerWillStartPictureInPicture:)]) {
-    [self.delegate pictureInPictureViewControllerWillStartPictureInPicture:self];
-  }
-  [self translateViewToPictureInPictureWithInitialSpeed:0.0f];
-}
-
-- (void)stopPictureInPicture {
-  if (self.delegate != nil
-      && [self.delegate respondsToSelector:@selector(pictureInPictureViewControllerWillStopPictureInPicture:)]) {
-    [self.delegate pictureInPictureViewControllerWillStopPictureInPicture:self];
-  }
-  
+- (void)translateViewToFullScreen {
   [UIApplication.sharedApplication sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
   self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   
@@ -311,19 +296,71 @@ static const CGFloat AnimationDamping = 1.0f;
   }];
 }
 
+#pragma mark Public Methods
+
+- (void)reload {
+  [self loadValues];
+  if (self.isPictureInPictureActive) {
+    self.view.bounds = CGRectMake(0, 0, self.pipSize.width, self.pipSize.height);
+    [self stickPictureInPictureToEdge];
+  } else {
+    self.view.bounds = CGRectMake(0, 0, self.fullScreenSize.width, self.fullScreenSize.height);
+    self.view.center = self.fullScreenCenter;
+  }
+}
+
+- (void)startPictureInPicture {
+  if (self.isPictureInPictureActive) {
+    NSLog(@"[NVPictureInPicture] Warning: startPictureInPicture called when view is already in picture-in-picture.");
+    return;
+  }
+  if (self.delegate != nil
+      && [self.delegate respondsToSelector:@selector(pictureInPictureViewControllerWillStartPictureInPicture:)]) {
+    [self.delegate pictureInPictureViewControllerWillStartPictureInPicture:self];
+  }
+  [self translateViewToPictureInPictureWithInitialSpeed:0.0f];
+}
+
+- (void)stopPictureInPicture {
+  if (!self.isPictureInPictureActive) {
+    NSLog(@"[NVPictureInPicture] stopPictureInPicture called when view is already in full-screen.");
+    return;
+  }
+  if (self.delegate != nil
+      && [self.delegate respondsToSelector:@selector(pictureInPictureViewControllerWillStopPictureInPicture:)]) {
+    [self.delegate pictureInPictureViewControllerWillStopPictureInPicture:self];
+  }
+  [self translateViewToFullScreen];
+}
+
 - (void)movePictureInPictureWithOffset:(CGPoint)offset animated:(BOOL)animated {
   
 }
 
-- (void)keyboardDidShow:(NSNotification *)notification {
+#pragma mark Keyboard Handler
+
+- (void)keyboardWillShow:(NSNotification *)notification {
   NSDictionary* info = [notification userInfo];
   self.keyboardHeight = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
-  [self stickPictureInPictureToEdge];
+  if (self.isPictureInPictureActive) {
+    CGFloat keyboardAnimationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    NSInteger keyboardAnimationCurve = [[info objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:keyboardAnimationDuration];
+    [UIView setAnimationCurve:keyboardAnimationCurve];
+    [UIView setAnimationBeginsFromCurrentState:YES];
+    self.view.center = [self validCenterPoint:self.view.center withSize:self.view.bounds.size];
+    [UIView commitAnimations];
+    
+  }
+  
 }
 
-- (void)keyboardDidHide:(NSNotification *)notification {
+- (void)keyboardWillHide:(NSNotification *)notification {
   self.keyboardHeight = 0.0f;
 }
+
+#pragma mark Rotation Handler
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
   [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
