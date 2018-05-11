@@ -20,8 +20,10 @@ typedef NS_ENUM(NSInteger, PictureInPictureHorizontalPosition) {
 static const CGSize DefaultPictureInPictureSize = {100, 150};
 static const UIEdgeInsets DefaultPictureInPictureEdgeInsets = {5,5,5,5};
 static const CGFloat PanSensitivity = 1.5f;
-static const CGFloat ThresholdTranslationPercentageForPictureInPicture = 0.5;
-static const CGFloat AnimationDuration = 0.2f;
+static const CGFloat ThresholdTranslationPercentageForPictureInPicture = 0.4;
+static const CGFloat AnimationDuration = 0.3f;
+static const CGFloat FreeFlowTimeAfterPan = 0.05;
+static const CGFloat AnimationDamping = 1.0f;
 
 @interface NVPictureInPictureViewController ()
 
@@ -123,8 +125,8 @@ static const CGFloat AnimationDuration = 0.2f;
       xMultiplier = xMultiplier == 0 ? yMultiplier : xMultiplier;
       [self setPIPCenterWithVerticalPosition:yMultiplier horizontalPosition:xMultiplier];
     }
-    CGFloat percentage = PanSensitivity * yMultiplier * (translation.y / (self.fullScreenSize.height - self.pipSize.height));
-    percentage = percentage < 0.0 ? 0.0 : percentage;
+    CGFloat percentage = fmax(0.0,
+                              PanSensitivity * yMultiplier * (translation.y / (self.fullScreenSize.height - self.pipSize.height)));
     if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
       if (percentage < 1.0) {
         [self updateViewWithTranslationPercentage:percentage];
@@ -134,17 +136,28 @@ static const CGFloat AnimationDuration = 0.2f;
     } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded
                || gestureRecognizer.state == UIGestureRecognizerStateCancelled
                || gestureRecognizer.state == UIGestureRecognizerStateFailed) {
-      [self setDisplayModeWithTranslationPercentage:percentage];
+      CGFloat velocity = yMultiplier * [gestureRecognizer velocityInView:self.view].y;
+      [self setDisplayModeWithTranslationPercentage:percentage velocity:velocity];
     }
   }
 }
 
-- (void)setDisplayModeWithTranslationPercentage:(CGFloat)percentage {
-  if (percentage > ThresholdTranslationPercentageForPictureInPicture) {
-    [self startPictureInPicture];
+- (void)setDisplayModeWithTranslationPercentage:(CGFloat)percentage velocity:(CGFloat)velocity {
+  CGFloat speed = [self normalizeSpeedWithVelocity:velocity withPercentage:percentage];
+  CGFloat normalizePercentage = [self normalizePercentage:percentage WithVelocity:velocity];
+  if (normalizePercentage > ThresholdTranslationPercentageForPictureInPicture) {
+    [self translateViewToPictureInPictureWithInitialSpeed:speed];
   } else {
     [self stopPictureInPicture];
   }
+}
+
+- (CGFloat)normalizePercentage:(CGFloat)percentage WithVelocity:(CGFloat)velocity {
+  return percentage + (velocity * FreeFlowTimeAfterPan) / (self.fullScreenSize.height - self.pipSize.height);
+}
+
+- (CGFloat)normalizeSpeedWithVelocity:(CGFloat)velocity withPercentage:(CGFloat)percentage {
+  return fabs(velocity / (self.fullScreenSize.height - self.pipSize.height));
 }
 
 - (void)updateViewWithTranslationPercentage:(CGFloat)percentage {
@@ -171,7 +184,21 @@ static const CGFloat AnimationDuration = 0.2f;
   } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded
              || gestureRecognizer.state == UIGestureRecognizerStateCancelled
              || gestureRecognizer.state == UIGestureRecognizerStateFailed) {
-    [self stickPictureInPictureToEdge];
+    CGPoint velocity = [gestureRecognizer velocityInView:self.view];
+    CGFloat speed = fabs(velocity.y / (self.fullScreenSize.height - self.pipSize.height));
+    [UIView animateWithDuration:AnimationDuration
+                          delay:0
+         usingSpringWithDamping:AnimationDamping
+          initialSpringVelocity:speed
+                        options:UIViewAnimationOptionLayoutSubviews
+                     animations:^{
+                       CGPoint center = self.view.center;
+                       center.x += velocity.x * FreeFlowTimeAfterPan;
+                       center.y += velocity.y * FreeFlowTimeAfterPan;
+                       self.view.center = [self validCenterPoint:center withSize:self.pipSize];;
+                     }
+                     completion:^(BOOL finished) {
+                     }];
   }
 }
 
@@ -228,19 +255,18 @@ static const CGFloat AnimationDuration = 0.2f;
   }
 }
 
-- (void)startPictureInPicture {
-  if (self.delegate != nil
-      && [self.delegate respondsToSelector:@selector(pictureInPictureViewControllerWillStartPictureInPicture:)]) {
-    [self.delegate pictureInPictureViewControllerWillStartPictureInPicture:self];
-  }
-  
+- (void)translateViewToPictureInPictureWithInitialSpeed:(CGFloat)speed {
   self.view.autoresizingMask = UIViewAutoresizingNone;
-  
   __weak typeof(self) weakSelf = self;
-  [UIView animateWithDuration:AnimationDuration animations:^{
+  [UIView animateWithDuration:AnimationDuration
+                        delay:0
+       usingSpringWithDamping:AnimationDamping
+        initialSpringVelocity:speed
+                      options:UIViewAnimationOptionLayoutSubviews
+                   animations:^{
     [weakSelf updateViewWithTranslationPercentage:1.0f];
-    [weakSelf.view layoutIfNeeded];
-  } completion:^(BOOL finished) {
+  }
+                   completion:^(BOOL finished) {
     if (finished) {
       [weakSelf.view addGestureRecognizer:self.pipTapGesture];
       weakSelf.pictureInPictureActive = YES;
@@ -250,6 +276,14 @@ static const CGFloat AnimationDuration = 0.2f;
       }
     }
   }];
+}
+
+- (void)startPictureInPicture {
+  if (self.delegate != nil
+      && [self.delegate respondsToSelector:@selector(pictureInPictureViewControllerWillStartPictureInPicture:)]) {
+    [self.delegate pictureInPictureViewControllerWillStartPictureInPicture:self];
+  }
+  [self translateViewToPictureInPictureWithInitialSpeed:0.0f];
 }
 
 - (void)stopPictureInPicture {
