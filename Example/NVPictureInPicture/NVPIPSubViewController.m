@@ -23,7 +23,6 @@
   self.delegate = self;
 }
 
-
 - (void)pictureInPictureViewControllerWillStartPictureInPicture:(NVPictureInPictureViewController *)pictureInPictureViewController {
   self.closeButton.alpha = 0;
   self.backButton.alpha = 0;

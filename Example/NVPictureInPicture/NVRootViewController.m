@@ -33,7 +33,7 @@
   viewController.closeBlock = ^{
     [self.pictureInPicture dismissPresentedViewControllerWithCompletion:nil];
   };
-  [self.pictureInPicture presentNVPIPViewController:viewController];
+  [self.pictureInPicture presentNVPictureInPictureViewController:viewController];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
