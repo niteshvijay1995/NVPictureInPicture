@@ -5,11 +5,11 @@
 [![License](https://img.shields.io/cocoapods/l/NVPictureInPicture.svg?style=flat)](https://cocoapods.org/pods/NVPictureInPicture)
 [![Platform](https://img.shields.io/cocoapods/p/NVPictureInPicture.svg?style=flat)](https://cocoapods.org/pods/NVPictureInPicture)
 
+Picture in Picture for iPhone. It lets you present content floating on top of application.
+
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
-
-## Requirements
 
 ## Installation
 
@@ -19,6 +19,11 @@ it, simply add the following line to your Podfile:
 ```ruby
 pod 'NVPictureInPicture'
 ```
+
+## Usage
+
+1. Subclass NVPictureInPictureViewController to create custom view controller.
+2. Create an instance of `NVPictureInPicture` and use `presentNVPictureInPictureViewController` to present view controller in full-screen mode.
 
 ## Author
 
