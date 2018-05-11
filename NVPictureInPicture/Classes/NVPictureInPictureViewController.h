@@ -9,6 +9,10 @@
 
 @protocol NVPictureInPictureViewControllerDelegate;
 
+/*!
+ @class    NVPictureInPictureViewController
+ @abstract  NVPictureInPictureViewController is a subclass of UIViewController that can be used to present the contents floating on top of applications. Subclass this class to create view controller supporting Picture in Picture.
+ */
 @interface NVPictureInPictureViewController : UIViewController
 
 /*!

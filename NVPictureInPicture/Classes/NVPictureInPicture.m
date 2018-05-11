@@ -10,27 +10,31 @@
 
 @interface NVPictureInPicture()
 
-@property (nonatomic) NVPictureInPictureViewController *viewController;
+@property (nonatomic) NVPictureInPictureViewController *pictureInPictureViewController;
 
 @end
 
 @implementation NVPictureInPicture
 
-- (void)presentNVPIPViewController:(NVPictureInPictureViewController *)viewController {
-  if (self.viewController != nil) {
+- (void)presentNVPictureInPictureViewController:(NVPictureInPictureViewController *)pictureInPictureViewController {
+  if (self.pictureInPictureViewController != nil) {
     [self dismissPresentedViewControllerWithCompletion:nil];
   }
-  self.viewController = viewController;
-  [UIApplication.sharedApplication.keyWindow addSubview:self.viewController.view];
-  [UIApplication.sharedApplication.keyWindow.rootViewController addChildViewController:self.viewController];
+  self.pictureInPictureViewController = pictureInPictureViewController;
+  [UIApplication.sharedApplication.keyWindow addSubview:self.pictureInPictureViewController.view];
+  [UIApplication.sharedApplication.keyWindow.rootViewController addChildViewController:self.pictureInPictureViewController];
 }
 
 - (void)dismissPresentedViewControllerWithCompletion: (void (^ __nullable)(void))completion {
-  [self.viewController.view removeFromSuperview];
-  self.viewController = nil;
+  [self.pictureInPictureViewController.view removeFromSuperview];
+  self.pictureInPictureViewController = nil;
   if (completion != NULL) {
     completion();
   }
+}
+
+- (void)dealloc {
+  [self dismissPresentedViewControllerWithCompletion:nil];
 }
 
 @end
