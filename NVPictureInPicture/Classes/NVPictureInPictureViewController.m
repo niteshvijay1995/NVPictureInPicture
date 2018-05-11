@@ -333,10 +333,6 @@ static const CGFloat AnimationDamping = 1.0f;
   [self translateViewToFullScreen];
 }
 
-- (void)movePictureInPictureWithOffset:(CGPoint)offset animated:(BOOL)animated {
-  
-}
-
 #pragma mark Keyboard Handler
 
 - (void)keyboardWillShow:(NSNotification *)notification {
