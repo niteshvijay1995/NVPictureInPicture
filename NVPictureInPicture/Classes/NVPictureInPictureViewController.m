@@ -347,9 +347,7 @@ static const CGFloat AnimationDamping = 1.0f;
     [UIView setAnimationBeginsFromCurrentState:YES];
     self.view.center = [self validCenterPoint:self.view.center withSize:self.view.bounds.size];
     [UIView commitAnimations];
-    
   }
-  
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
