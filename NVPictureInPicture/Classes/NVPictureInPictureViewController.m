@@ -115,7 +115,8 @@ static const CGFloat AnimationDamping = 1.0f;
       yMultiplier = translation.y / fabs(translation.y);
       xMultiplier = translation.x / fabs(translation.x);
       xMultiplier = xMultiplier == 0 ? yMultiplier : xMultiplier;
-      [self setPIPCenterWithVerticalPosition:yMultiplier horizontalPosition:xMultiplier];
+      [self setPIPCenterWithVerticalPosition:yMultiplier
+                          horizontalPosition:xMultiplier];
     }
     CGFloat percentage = fmax(0.0,
                               PanSensitivity * yMultiplier * (translation.y / (self.fullScreenSize.height - self.pipSize.height)));
@@ -179,7 +180,7 @@ static const CGFloat AnimationDamping = 1.0f;
   if (normalizePercentage > ThresholdTranslationPercentageForPictureInPicture) {
     [self translateViewToPictureInPictureWithInitialSpeed:speed];
   } else {
-    [self stopPictureInPicture];
+    [self translateViewToFullScreen];
   }
 }
 
