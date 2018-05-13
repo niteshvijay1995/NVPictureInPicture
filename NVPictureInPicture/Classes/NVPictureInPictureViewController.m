@@ -369,12 +369,14 @@ static const CGFloat AnimationDamping = 1.0f;
     [self animateWithKeyboardInfoDictionary:info animations:^{
       self.view.center = [self validCenterPoint:self.lastPointBeforeKeyboardToggle withSize:self.view.bounds.size];
     }];
+    self.noInteractionFlag = NO;
   }
 }
 
 #pragma mark Rotation Handler
 
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
+  self.noInteractionFlag = NO;
   [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
     if (self.isPictureInPictureActive) {
       CGPoint centerRatio = CGPointMake((self.view.center.x - self.pipSize.width / 2) / (self.fullScreenSize.width - self.pipSize.width),
