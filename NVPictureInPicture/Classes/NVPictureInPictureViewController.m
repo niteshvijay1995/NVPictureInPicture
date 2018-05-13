@@ -36,6 +36,8 @@ static const CGFloat AnimationDamping = 1.0f;
 @property (nonatomic) CGFloat keyboardHeight;
 @property (nonatomic) CGPoint pipCenter;
 @property (nonatomic) CGPoint fullScreenCenter;
+@property (nonatomic) CGPoint lastPointBeforeKeyboardToggle;
+@property (nonatomic) BOOL noInteractionFlag;
 
 @end
 
@@ -146,6 +148,7 @@ static const CGFloat AnimationDamping = 1.0f;
   } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded
              || gestureRecognizer.state == UIGestureRecognizerStateCancelled
              || gestureRecognizer.state == UIGestureRecognizerStateFailed) {
+    self.noInteractionFlag = NO;
     CGPoint velocity = [gestureRecognizer velocityInView:self.view];
     CGFloat speed = fabs(velocity.y / (self.fullScreenSize.height - self.pipSize.height));
     [UIView animateWithDuration:AnimationDuration
@@ -336,23 +339,37 @@ static const CGFloat AnimationDamping = 1.0f;
 
 #pragma mark Keyboard Handler
 
+- (void)animateWithKeyboardInfoDictionary:(NSDictionary *)info animations:(void (^)(void))animations {
+  CGFloat keyboardAnimationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+  NSInteger keyboardAnimationCurve = [[info objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
+  [UIView beginAnimations:nil context:NULL];
+  [UIView setAnimationDuration:keyboardAnimationDuration];
+  [UIView setAnimationCurve:keyboardAnimationCurve];
+  [UIView setAnimationBeginsFromCurrentState:YES];
+  animations();
+  [UIView commitAnimations];
+}
+
 - (void)keyboardWillShow:(NSNotification *)notification {
   NSDictionary* info = [notification userInfo];
   self.keyboardHeight = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
   if (self.isPictureInPictureActive) {
-    CGFloat keyboardAnimationDuration = [[info objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    NSInteger keyboardAnimationCurve = [[info objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:keyboardAnimationDuration];
-    [UIView setAnimationCurve:keyboardAnimationCurve];
-    [UIView setAnimationBeginsFromCurrentState:YES];
-    self.view.center = [self validCenterPoint:self.view.center withSize:self.view.bounds.size];
-    [UIView commitAnimations];
+    self.lastPointBeforeKeyboardToggle = self.view.center;
+    self.noInteractionFlag = YES;
+    [self animateWithKeyboardInfoDictionary:info animations:^{
+      self.view.center = [self validCenterPoint:self.view.center withSize:self.view.bounds.size];
+    }];
   }
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification {
   self.keyboardHeight = 0.0f;
+  NSDictionary* info = [notification userInfo];
+  if (self.isPictureInPictureActive && self.noInteractionFlag) {
+    [self animateWithKeyboardInfoDictionary:info animations:^{
+      self.view.center = [self validCenterPoint:self.lastPointBeforeKeyboardToggle withSize:self.view.bounds.size];
+    }];
+  }
 }
 
 #pragma mark Rotation Handler
