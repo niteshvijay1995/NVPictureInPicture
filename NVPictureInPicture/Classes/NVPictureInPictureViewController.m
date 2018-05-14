@@ -29,6 +29,7 @@ static const CGFloat PictureInPictureCornerRadius = 5.0f;
 @interface NVPictureInPictureViewController ()
 
 @property (nonatomic) BOOL pictureInPictureActive;
+@property (nonatomic) BOOL pictureInPictureEnabled;
 @property (nonatomic) UIPanGestureRecognizer *panGesture;
 @property (nonatomic) UITapGestureRecognizer *pipTapGesture;
 @property (nonatomic) CGSize pipSize;
@@ -49,7 +50,6 @@ static const CGFloat PictureInPictureCornerRadius = 5.0f;
   self.view.bounds = CGRectMake(0, 0, self.fullScreenSize.width, self.fullScreenSize.height);
   self.view.center = self.fullScreenCenter;
   self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-  [self.view addGestureRecognizer:self.panGesture];
   self.pipTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(keyboardWillShow:)
@@ -72,6 +72,66 @@ static const CGFloat PictureInPictureCornerRadius = 5.0f;
 
 - (void)dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+#pragma mark Public Methods
+
+- (void)reload {
+  [self loadValues];
+  if (self.isPictureInPictureActive) {
+    self.view.bounds = CGRectMake(0, 0, self.pipSize.width, self.pipSize.height);
+    [self stickPictureInPictureToEdge];
+  } else {
+    self.view.bounds = CGRectMake(0, 0, self.fullScreenSize.width, self.fullScreenSize.height);
+    self.view.center = self.fullScreenCenter;
+  }
+}
+
+- (void)enablePictureInPicture {
+  if (self.isPictureInPictureEnabled) {
+    NSLog(@"[NVPictureInPicture] Warning: enablePictureInPicture called when Picture in Picture is already enabled.");
+    return;
+  }
+  self.pictureInPictureEnabled = YES;
+  [self.view addGestureRecognizer:self.panGesture];
+}
+
+- (void)disablePictureInPicture {
+  if (!self.isPictureInPictureEnabled) {
+    NSLog(@"[NVPictureInPicture] Warning: disablePictureInPicture called when Picture in Picture is already disabled.");
+    return;
+  }
+  self.pictureInPictureEnabled = NO;
+  [self.view removeGestureRecognizer:self.panGesture];
+}
+
+- (void)startPictureInPicture {
+  if (!self.isPictureInPictureEnabled) {
+    NSLog(@"[NVPictureInPicture] Warning: startPictureInPicture called when Picture in Picture is disabled");
+    return;
+  }
+  if (self.isPictureInPictureActive) {
+    NSLog(@"[NVPictureInPicture] Warning: startPictureInPicture called when view is already in picture-in-picture.");
+    return;
+  }
+  if (self.delegate != nil
+      && [self.delegate respondsToSelector:@selector(pictureInPictureViewControllerWillStartPictureInPicture:)]) {
+    [self.delegate pictureInPictureViewControllerWillStartPictureInPicture:self];
+  }
+  [self translateViewToPictureInPictureWithInitialSpeed:0.0f];
+}
+
+- (void)stopPictureInPicture {
+  if (!self.isPictureInPictureActive) {
+    NSLog(@"[NVPictureInPicture] stopPictureInPicture called when view is already in full-screen.");
+    return;
+  }
+  if (self.delegate != nil
+      && [self.delegate respondsToSelector:@selector(pictureInPictureViewControllerWillStopPictureInPicture:)]) {
+    [self.delegate pictureInPictureViewControllerWillStopPictureInPicture:self];
+  }
+  [self translateViewToFullScreen];
 }
 
 #pragma mark Datasource Methods
@@ -300,43 +360,6 @@ static const CGFloat PictureInPictureCornerRadius = 5.0f;
       }
     }
   }];
-}
-
-#pragma mark Public Methods
-
-- (void)reload {
-  [self loadValues];
-  if (self.isPictureInPictureActive) {
-    self.view.bounds = CGRectMake(0, 0, self.pipSize.width, self.pipSize.height);
-    [self stickPictureInPictureToEdge];
-  } else {
-    self.view.bounds = CGRectMake(0, 0, self.fullScreenSize.width, self.fullScreenSize.height);
-    self.view.center = self.fullScreenCenter;
-  }
-}
-
-- (void)startPictureInPicture {
-  if (self.isPictureInPictureActive) {
-    NSLog(@"[NVPictureInPicture] Warning: startPictureInPicture called when view is already in picture-in-picture.");
-    return;
-  }
-  if (self.delegate != nil
-      && [self.delegate respondsToSelector:@selector(pictureInPictureViewControllerWillStartPictureInPicture:)]) {
-    [self.delegate pictureInPictureViewControllerWillStartPictureInPicture:self];
-  }
-  [self translateViewToPictureInPictureWithInitialSpeed:0.0f];
-}
-
-- (void)stopPictureInPicture {
-  if (!self.isPictureInPictureActive) {
-    NSLog(@"[NVPictureInPicture] stopPictureInPicture called when view is already in full-screen.");
-    return;
-  }
-  if (self.delegate != nil
-      && [self.delegate respondsToSelector:@selector(pictureInPictureViewControllerWillStopPictureInPicture:)]) {
-    [self.delegate pictureInPictureViewControllerWillStopPictureInPicture:self];
-  }
-  [self translateViewToFullScreen];
 }
 
 #pragma mark Keyboard Handler

@@ -11,7 +11,8 @@
 
 /*!
  @class    NVPictureInPictureViewController
- @abstract  NVPictureInPictureViewController is a subclass of UIViewController that can be used to present the contents floating on top of applications. Subclass this class to create view controller supporting Picture in Picture.
+ @abstract  NVPictureInPictureViewController is a subclass of UIViewController that can be used to present the contents floating on top of application. Subclass this class to create view controller supporting Picture in Picture. Picture in Picture can be activated either with a pan gesture or by calling -startPictureInPicture.
+ @note     Picture in Picture is disabled by default. Call -enablePictureInPicture to enable it.
  */
 @interface NVPictureInPictureViewController : UIViewController
 
@@ -28,6 +29,12 @@
 @property(nonatomic, readonly, getter=isPictureInPictureActive) BOOL pictureInPictureActive;
 
 /*!
+ @property  pictureInPictureEnabled
+ @abstract  Whether or not Picture in Picture is enabled.
+ */
+@property (nonatomic, readonly, getter=isPictureInPictureEnabled) BOOL pictureInPictureEnabled;
+
+/*!
  @method    reload
  @abstract  Reload Picture in Picture View Controller.
  @discussion  Reloads everything from scratch. The display mode is preserved. Call reload there is any change in DataSource.
@@ -36,9 +43,26 @@
 - (void)reload;
 
 /*!
+ @method    enablePictureInPicture
+ @abstract  Enable Picture in Picture
+ @discussion  Set pictureInPictureEnabled to YES. Enable pan gesture transition from fullscreen to Picture in Picture.
+ @note      Picture in Picture is disabled by default.
+ */
+- (void)enablePictureInPicture;
+
+/*!
+ @method    disablePictureInPicture
+ @abstract  Disable Picture in Picture
+ @discussion  Set pictureInPictureEnabled to NO. Disable pan gesture transition from fullscreen to Picture in Picture.
+ @note      It is recommended to first call -stopPictureInPicture if Picture in Picture is active.
+ */
+- (void)disablePictureInPicture;
+
+/*!
  @method    startPictureInPicture
  @abstract  Start Picture in Picture with animation.
  @discussion  Receiver will call -pictureInPictureViewControllerWillStartPictureInPicture: before transition to Picture in Picture and -pictureInPictureViewControllerDidStartPictureInPicture: after successful transition. Client can stop Picture in Picture by calling -stopPictureInPicture. In addition the user can stop Picture in Picture through pan gesture.
+ @note      startPictureInPicture will only work when Picture in Picture is enabled
  */
 - (void)startPictureInPicture;
 
