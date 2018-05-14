@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'NVPictureInPicture'
-  s.version          = '0.2.0'
-  s.summary          = 'A short description of NVPictureInPicture.'
+  s.version          = '0.3.0'
+  s.summary          = 'Picture in Picture for iPhone. It lets you present content floating on top of application.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,7 +18,9 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+                        NVPictureInPicture lets you present your custom view controller in Picture-in-Picture view floating on top of your application.
+                        The purpose of Picture in Picture is to make your application usable while playing video or on video call.
+                        The size and edge insets of Picture in Picture view is customizable.
                        DESC
 
   s.homepage         = 'https://github.com/niteshvijay1995/NVPictureInPicture'
