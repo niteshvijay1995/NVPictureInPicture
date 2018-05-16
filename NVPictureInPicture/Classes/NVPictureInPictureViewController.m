@@ -404,11 +404,13 @@ static const CGFloat PictureInPictureCornerRadius = 5.0f;
   self.noInteractionFlag = NO;
   [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
     if (self.isPictureInPictureActive) {
-      CGPoint centerRatio = CGPointMake((self.view.center.x - self.pipSize.width / 2) / (self.fullScreenSize.width - self.pipSize.width),
-                                        (self.view.center.y - self.pipSize.height / 2) / (self.fullScreenSize.height - self.pipSize.height));
+      CGPoint originRatio = CGPointMake(self.view.frame.origin.x
+                                        / (self.fullScreenSize.width - self.pipSize.width - self.pipEdgeInsets.left - self.pipEdgeInsets.right),
+                                        self.view.frame.origin.y
+                                         / (self.fullScreenSize.height - self.pipSize.height - self.pipEdgeInsets.top - self.pipEdgeInsets.bottom));
       CGPoint newCenter;
-      newCenter.x = centerRatio.x * size.width;
-      newCenter.y = centerRatio.y * size.height;
+      newCenter.x = self.pipSize.width / 2 + originRatio.x * (size.width - self.pipSize.width - self.pipEdgeInsets.left - self.pipEdgeInsets.right);
+      newCenter.y = self.pipSize.height / 2 + originRatio.y * (size.height - self.pipSize.height - self.pipEdgeInsets.top - self.pipEdgeInsets.bottom);
       self.view.center = [self validCenterPoint:newCenter withSize:self.view.bounds.size];
     }
   } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
