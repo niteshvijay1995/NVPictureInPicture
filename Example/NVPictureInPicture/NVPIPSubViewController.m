@@ -56,6 +56,6 @@
 }
 
 - (IBAction)close:(id)sender {
-  self.closeBlock();
+  [self dismiss];
 }
 @end

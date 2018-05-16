@@ -10,6 +10,4 @@
 
 @interface NVPIPSubViewController : NVPictureInPictureViewController
 
-@property (nonatomic) void(^closeBlock)(void);
-
 @end
