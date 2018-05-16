@@ -25,6 +25,8 @@ static const CGFloat AnimationDuration = 0.3f;
 static const CGFloat FreeFlowTimeAfterPan = 0.05;
 static const CGFloat AnimationDamping = 1.0f;
 static const CGFloat PictureInPictureCornerRadius = 5.0f;
+static const CGFloat PresentationAnimationDuration = 0.6f;
+static const CGFloat PresentationAnimationVelocity = 0.5f;
 
 @interface NVPictureInPictureViewController ()
 
@@ -45,12 +47,14 @@ static const CGFloat PictureInPictureCornerRadius = 5.0f;
 
 @implementation NVPictureInPictureViewController
 
-- (void)viewDidLoad {
+- (void)loadView {
+  [super loadView];
   [self loadValues];
-  self.view.bounds = CGRectMake(0, 0, self.fullScreenSize.width, self.fullScreenSize.height);
-  self.view.center = self.fullScreenCenter;
   self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
   self.pipTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+}
+
+- (void)viewDidLoad {
   [[NSNotificationCenter defaultCenter] addObserver:self
                                            selector:@selector(keyboardWillShow:)
                                                name:UIKeyboardWillShowNotification
@@ -294,12 +298,12 @@ static const CGFloat PictureInPictureCornerRadius = 5.0f;
   CGPoint center = CGPointMake(0, 0);
   if(verticalPosition == top) {
     center.y = 0 + self.pipEdgeInsets.top + self.pipSize.height / 2;
-  } else if(verticalPosition == bottom) {
+  } else {
     center.y = self.fullScreenSize.height - self.pipEdgeInsets.bottom - self.pipSize.height / 2;
   }
   if(horizontalPosition == left) {
     center.x = 0 + self.pipEdgeInsets.left + self.pipSize.width / 2;
-  } else if(horizontalPosition == right){
+  } else {
     center.x = self.fullScreenSize.width - self.pipEdgeInsets.right - self.pipSize.width / 2;
   }
   self.pipCenter = center;
@@ -416,6 +420,46 @@ static const CGFloat PictureInPictureCornerRadius = 5.0f;
   } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
     [self reload];
   }];
+}
+
+# pragma mark Presentor
+
+- (void)presentOnWindow:(UIWindow *)window {
+  self.view.frame = CGRectMake(0,
+                               self.fullScreenSize.height,
+                               self.fullScreenSize.width,
+                               self.fullScreenSize.height);
+  [window addSubview:self.view];
+  [UIView animateWithDuration:PresentationAnimationDuration
+                        delay:0.0f
+       usingSpringWithDamping:AnimationDamping
+        initialSpringVelocity:PresentationAnimationVelocity
+                      options:UIViewAnimationOptionCurveEaseIn
+                   animations:^{
+                     self.view.frame = CGRectMake(0,
+                                                  0,
+                                                  self.fullScreenSize.width,
+                                                  self.fullScreenSize.height);
+                   } completion:^(BOOL finished) {
+                     [window.rootViewController addChildViewController:self];
+                   }];
+}
+
+- (void)dismiss {
+  [UIView animateWithDuration:PresentationAnimationDuration
+                        delay:0.0f
+       usingSpringWithDamping:AnimationDamping
+        initialSpringVelocity:PresentationAnimationVelocity
+                      options:UIViewAnimationOptionCurveEaseIn
+                   animations:^{
+                     self.view.frame = CGRectMake(0,
+                                                  self.fullScreenSize.height,
+                                                  self.fullScreenSize.width,
+                                                  self.fullScreenSize.height);
+                   } completion:^(BOOL finished) {
+                     [self.view removeFromSuperview];
+                     [self removeFromParentViewController];
+                   }];
 }
 
 @end

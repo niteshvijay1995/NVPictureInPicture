@@ -34,6 +34,10 @@
  */
 @property (nonatomic, readonly, getter=isPictureInPictureEnabled) BOOL pictureInPictureEnabled;
 
+- (void)presentOnWindow:(UIWindow *)window;
+
+- (void)dismiss;
+
 /*!
  @method    reload
  @abstract  Reload Picture in Picture View Controller.

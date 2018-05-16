@@ -11,9 +11,7 @@
 		41F056FB1600923F7380B4948D14441C /* Pods-NVPictureInPicture_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E88ADABF79C3289FEA6A9684A3629E1 /* Pods-NVPictureInPicture_Tests-dummy.m */; };
 		53360678FD3BF2CA2618ABEB256D7C4C /* NVPictureInPicture-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6EF04F9220449C106382A027CD3BF1A9 /* NVPictureInPicture-dummy.m */; };
 		57EA5849B5BEEFB7F24ABD9B5886CE9C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
-		61E4345C91D8C10D0545C741FEC9A602 /* NVPictureInPicture.h in Headers */ = {isa = PBXBuildFile; fileRef = 177A6D28CB603F37F2FF8BB6BFB8B8FE /* NVPictureInPicture.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		67F87E49D634D18B2B20BBB0CA7151E5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
-		824AC003934C46519E81A438675FE30E /* NVPictureInPicture.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E5E9E98D6BA1F8ECFF9913D7DB37291 /* NVPictureInPicture.m */; };
 		C3637D5A13EFF223725473663546EFE6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
 		C37A70798B01C77A9CF3DB06BBC5CD69 /* NVPictureInPictureViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = BE7E2727E79DDC8355FEDB6A8D650CBC /* NVPictureInPictureViewController.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		CEB2E93C3261F2AD4E8A3D2057AD05DA /* Pods-NVPictureInPicture_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7200BFC8FF3ED918B17FA4FF4DAC882A /* Pods-NVPictureInPicture_Example-dummy.m */; };
@@ -30,14 +28,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		060BAEE9541AEBACC5F2AC6669606A0C /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
-		0899075748D26E15F6C553CEAB95B729 /* NVPictureInPicture.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; path = NVPictureInPicture.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		060BAEE9541AEBACC5F2AC6669606A0C /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		0899075748D26E15F6C553CEAB95B729 /* NVPictureInPicture.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; path = NVPictureInPicture.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		0C304EF8FD485E4809537D4633777074 /* Pods-NVPictureInPicture_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-NVPictureInPicture_Example-resources.sh"; sourceTree = "<group>"; };
-		177A6D28CB603F37F2FF8BB6BFB8B8FE /* NVPictureInPicture.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NVPictureInPicture.h; path = NVPictureInPicture/Classes/NVPictureInPicture.h; sourceTree = "<group>"; };
-		2E5E9E98D6BA1F8ECFF9913D7DB37291 /* NVPictureInPicture.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NVPictureInPicture.m; path = NVPictureInPicture/Classes/NVPictureInPicture.m; sourceTree = "<group>"; };
 		334D56C9F0FBBF3799C98A9BD1CFDFD4 /* Pods-NVPictureInPicture_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NVPictureInPicture_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		34D5A8175AD009BD4EF7B0349AD0C35F /* Pods-NVPictureInPicture_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-NVPictureInPicture_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
-		3F3B2023C2110CDEB742F45D345D5727 /* libPods-NVPictureInPicture_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-NVPictureInPicture_Tests.a"; path = "libPods-NVPictureInPicture_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3F3B2023C2110CDEB742F45D345D5727 /* libPods-NVPictureInPicture_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NVPictureInPicture_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		49712CB3D3C52270E9CBB6F91241A5F9 /* NVPictureInPicture.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = NVPictureInPicture.xcconfig; sourceTree = "<group>"; };
 		4CD2D34E749FCBEF43A8BE8F721A3C53 /* Pods-NVPictureInPicture_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-NVPictureInPicture_Tests-frameworks.sh"; sourceTree = "<group>"; };
 		4E88ADABF79C3289FEA6A9684A3629E1 /* Pods-NVPictureInPicture_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-NVPictureInPicture_Tests-dummy.m"; sourceTree = "<group>"; };
@@ -49,15 +45,15 @@
 		6EF04F9220449C106382A027CD3BF1A9 /* NVPictureInPicture-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NVPictureInPicture-dummy.m"; sourceTree = "<group>"; };
 		7200BFC8FF3ED918B17FA4FF4DAC882A /* Pods-NVPictureInPicture_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-NVPictureInPicture_Example-dummy.m"; sourceTree = "<group>"; };
 		72DF276C4544DBB4CBCFE1CF499CE19E /* NVPictureInPicture-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NVPictureInPicture-prefix.pch"; sourceTree = "<group>"; };
-		73B815B919B882EF680EBB161E256774 /* libPods-NVPictureInPicture_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = "libPods-NVPictureInPicture_Example.a"; path = "libPods-NVPictureInPicture_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		73B815B919B882EF680EBB161E256774 /* libPods-NVPictureInPicture_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-NVPictureInPicture_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		93B6D4B26ABD55356ED6B4BF916114F7 /* NVPictureInPictureViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = NVPictureInPictureViewController.m; path = NVPictureInPicture/Classes/NVPictureInPictureViewController.m; sourceTree = "<group>"; };
 		9A984DE076AEE924BD33CE55081047C4 /* Pods-NVPictureInPicture_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-NVPictureInPicture_Example-frameworks.sh"; sourceTree = "<group>"; };
-		A1C28CE8C3236CB9F7B2945EA12915F6 /* libNVPictureInPicture.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libNVPictureInPicture.a; path = libNVPictureInPicture.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1C28CE8C3236CB9F7B2945EA12915F6 /* libNVPictureInPicture.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNVPictureInPicture.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		A75715183DF75C4675424B6AD9F4EA05 /* Pods-NVPictureInPicture_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-NVPictureInPicture_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		BE7E2727E79DDC8355FEDB6A8D650CBC /* NVPictureInPictureViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = NVPictureInPictureViewController.h; path = NVPictureInPicture/Classes/NVPictureInPictureViewController.h; sourceTree = "<group>"; };
 		C4D2AAD1551403CE6DA821D4CEB179CD /* Pods-NVPictureInPicture_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-NVPictureInPicture_Example.release.xcconfig"; sourceTree = "<group>"; };
-		CFAAB33CCFAA86C345B18244428FDCFF /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		CFAAB33CCFAA86C345B18244428FDCFF /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		F80D49804C6492735075C566B043CF58 /* Pods-NVPictureInPicture_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-NVPictureInPicture_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -145,8 +141,6 @@
 		8485CCC761B913048D65C35DED86A45E /* NVPictureInPicture */ = {
 			isa = PBXGroup;
 			children = (
-				177A6D28CB603F37F2FF8BB6BFB8B8FE /* NVPictureInPicture.h */,
-				2E5E9E98D6BA1F8ECFF9913D7DB37291 /* NVPictureInPicture.m */,
 				BE7E2727E79DDC8355FEDB6A8D650CBC /* NVPictureInPictureViewController.h */,
 				93B6D4B26ABD55356ED6B4BF916114F7 /* NVPictureInPictureViewController.m */,
 				4D7D60480DA75032AD0F26F9A07F3D92 /* Pod */,
@@ -215,7 +209,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				61E4345C91D8C10D0545C741FEC9A602 /* NVPictureInPicture.h in Headers */,
 				C37A70798B01C77A9CF3DB06BBC5CD69 /* NVPictureInPictureViewController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -323,7 +316,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				53360678FD3BF2CA2618ABEB256D7C4C /* NVPictureInPicture-dummy.m in Sources */,
-				824AC003934C46519E81A438675FE30E /* NVPictureInPicture.m in Sources */,
 				193EAC83E02A1797F69CA7807B558666 /* NVPictureInPictureViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
