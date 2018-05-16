@@ -34,8 +34,20 @@
  */
 @property (nonatomic, readonly, getter=isPictureInPictureEnabled) BOOL pictureInPictureEnabled;
 
+/*!
+ @method    presentOnWindow:
+ @param     window
+ @abstract  Present NVPictureInPictureViewController
+ Pass the main window of the app
+ @discussion  The view will be presented modally. The view controller will be added as a child of rootViewController of window
+ */
 - (void)presentOnWindow:(UIWindow *)window;
 
+/*!
+ @method    dismiss
+ @abstract  Dismiss NVPictureInPictureViewController
+ @discussion  The view will be dismissed modally. The view and the controller will be removed from the parent.
+ */
 - (void)dismiss;
 
 /*!
