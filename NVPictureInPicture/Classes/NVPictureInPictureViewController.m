@@ -25,7 +25,7 @@ static const CGFloat AnimationDuration = 0.3f;
 static const CGFloat FreeFlowTimeAfterPan = 0.05;
 static const CGFloat AnimationDamping = 1.0f;
 static const CGFloat PictureInPictureCornerRadius = 5.0f;
-static const CGFloat PresentationAnimationDuration = 0.6f;
+static const CGFloat PresentationAnimationDuration = 0.5f;
 static const CGFloat PresentationAnimationVelocity = 0.5f;
 
 @interface NVPictureInPictureViewController ()
@@ -424,7 +424,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 
 # pragma mark Presentor
 
-- (void)presentOnWindow:(UIWindow *)window {
+- (void)presentOnWindow:(UIWindow *)window completion:(void (^ _Nullable)(void))completion {
   self.view.frame = CGRectMake(0,
                                self.fullScreenSize.height,
                                self.fullScreenSize.width,
@@ -442,15 +442,19 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
                                                   self.fullScreenSize.height);
                    } completion:^(BOOL finished) {
                      [window.rootViewController addChildViewController:self];
+                     if (completion != NULL) {
+                       completion();
+                     }
                    }];
 }
 
-- (void)dismiss {
+- (void)dismissWithCompletion:(void (^)(void))completion {
+  [self viewWillDisappear:YES];
   [UIView animateWithDuration:PresentationAnimationDuration
                         delay:0.0f
        usingSpringWithDamping:AnimationDamping
         initialSpringVelocity:PresentationAnimationVelocity
-                      options:UIViewAnimationOptionCurveEaseIn
+                      options:UIViewAnimationOptionCurveEaseOut
                    animations:^{
                      self.view.frame = CGRectMake(0,
                                                   self.fullScreenSize.height,
@@ -458,7 +462,11 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
                                                   self.fullScreenSize.height);
                    } completion:^(BOOL finished) {
                      [self.view removeFromSuperview];
+                     [self viewDidDisappear:YES];
                      [self removeFromParentViewController];
+                     if (completion != NULL) {
+                       completion();
+                     }
                    }];
 }
 

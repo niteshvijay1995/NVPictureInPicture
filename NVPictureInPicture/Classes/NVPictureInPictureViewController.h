@@ -38,17 +38,21 @@
  @method    presentOnWindow:
  @param     window
  Window of the application where the view is to be added as subview.
+ @param     completion
+ The completion handler, if provided, will be invoked after the presented controller's viewDidAppear: callback is invoked.
  @abstract  Present NVPictureInPictureViewController
  @discussion  The view will be presented modally. The view controller will be added as a child of rootViewController of window
  */
-- (void)presentOnWindow:(UIWindow *)window;
+- (void)presentOnWindow:(UIWindow *)window completion:(void (^ __nullable)(void))completion;
 
 /*!
  @method    dismiss
+ @param     completion
+ The completion handler, if provided, will be invoked after the dismissed controller's viewDidDisappear: callback is invoked.
  @abstract  Dismiss NVPictureInPictureViewController
  @discussion  The view will be dismissed modally. The view and the controller will be removed from the parent.
  */
-- (void)dismiss;
+- (void)dismissWithCompletion:(void (^ __nullable)(void))completion;
 
 /*!
  @method    reload
