@@ -20,7 +20,7 @@
   [self.view endEditing:YES];
   NVPIPSubViewController *viewController = (NVPIPSubViewController *)[[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"NVPIPSubViewController"];
   viewController.view.backgroundColor = sender.backgroundColor;
-  [viewController presentOnWindow:UIApplication.sharedApplication.keyWindow];
+  [viewController presentOnWindow:UIApplication.sharedApplication.keyWindow completion:nil];
 }
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {

@@ -56,6 +56,8 @@
 }
 
 - (IBAction)close:(id)sender {
-  [self dismiss];
+  [self dismissWithCompletion:^{
+    [self view];
+  }];
 }
 @end
