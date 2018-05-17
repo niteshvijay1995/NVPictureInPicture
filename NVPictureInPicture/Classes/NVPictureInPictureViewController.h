@@ -37,8 +37,8 @@
 /*!
  @method    presentOnWindow:
  @param     window
+ Window of the application where the view is to be added as subview.
  @abstract  Present NVPictureInPictureViewController
- Pass the main window of the app
  @discussion  The view will be presented modally. The view controller will be added as a child of rootViewController of window
  */
 - (void)presentOnWindow:(UIWindow *)window;
