@@ -60,4 +60,13 @@
     [self view];
   }];
 }
+
+- (UIEdgeInsets)pictureInPictureEdgeInsets {
+  if (UIApplication.sharedApplication.statusBarOrientation == UIInterfaceOrientationPortrait) {
+    return UIEdgeInsetsMake(50, 10, 30, 10);
+  } else {
+    return UIEdgeInsetsMake(30, 10, 20, 10);
+  }
+}
+
 @end
