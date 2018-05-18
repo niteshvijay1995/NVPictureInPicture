@@ -457,10 +457,10 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
         initialSpringVelocity:PresentationAnimationVelocity
                       options:UIViewAnimationOptionCurveEaseOut
                    animations:^{
-                     self.view.frame = CGRectMake(0,
+                     self.view.frame = CGRectMake(self.view.frame.origin.x,
                                                   self.fullScreenSize.height,
-                                                  self.fullScreenSize.width,
-                                                  self.fullScreenSize.height);
+                                                  self.view.frame.size.width,
+                                                  self.view.frame.size.height);
                    } completion:^(BOOL finished) {
                      [weakSelf.view removeFromSuperview];
                      [weakSelf viewDidDisappear:YES];
