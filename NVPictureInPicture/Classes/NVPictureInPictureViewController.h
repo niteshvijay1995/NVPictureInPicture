@@ -94,14 +94,14 @@
 - (void)stopPictureInPicture;
 
 /*!
-  @method   [DataSource] pictureInPictureEdgeInsets
+  @method   [Layout] pictureInPictureEdgeInsets
   @abstract Implement this method in subclass to return custom edge insets for Picture in Picture View.
   @discussion If not implemented, default insets will be used which is 10 for all edges. The Edge Insets are calculated with respect to device screen bounds.
   */
 - (UIEdgeInsets)pictureInPictureEdgeInsets;
 
 /*!
- @method   [DataSource] pictureInPictureSize
+ @method   [Layout] pictureInPictureSize
  @abstract Implement this method in subclass to return custom size for Picture in Picture View.
  @discussion If not implemented, default size will be used which is {100, 150}.
  */
