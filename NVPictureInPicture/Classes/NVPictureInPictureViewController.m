@@ -450,6 +450,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 
 - (void)dismissWithCompletion:(void (^)(void))completion {
   [self viewWillDisappear:YES];
+  __weak typeof(self) weakSelf = self;
   [UIView animateWithDuration:PresentationAnimationDuration
                         delay:0.0f
        usingSpringWithDamping:AnimationDamping
@@ -461,9 +462,9 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
                                                   self.fullScreenSize.width,
                                                   self.fullScreenSize.height);
                    } completion:^(BOOL finished) {
-                     [self.view removeFromSuperview];
-                     [self viewDidDisappear:YES];
-                     [self removeFromParentViewController];
+                     [weakSelf.view removeFromSuperview];
+                     [weakSelf viewDidDisappear:YES];
+                     [weakSelf removeFromParentViewController];
                      if (completion != NULL) {
                        completion();
                      }
