@@ -7,6 +7,9 @@
 
 #import "NVPictureInPictureViewController.h"
 
+#define NVAssertMainThread NSAssert([NSThread isMainThread], @"[NVPictureInPicture] NVPictureInPicture should be called from main thread only.")
+
+
 typedef NS_ENUM(NSInteger, PictureInPictureVerticalPosition) {
   top = -1,
   bottom = 1
@@ -82,6 +85,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 #pragma mark Public Methods
 
 - (void)reload {
+  NVAssertMainThread;
   [self loadValues];
   if (self.isPictureInPictureActive) {
     self.view.bounds = CGRectMake(0, 0, self.pipSize.width, self.pipSize.height);
@@ -93,6 +97,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 }
 
 - (void)enablePictureInPicture {
+  NVAssertMainThread;
   if (self.isPictureInPictureEnabled) {
     NSLog(@"[NVPictureInPicture] Warning: enablePictureInPicture called when Picture in Picture is already enabled.");
     return;
@@ -102,6 +107,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 }
 
 - (void)disablePictureInPicture {
+  NVAssertMainThread;
   if (!self.isPictureInPictureEnabled) {
     NSLog(@"[NVPictureInPicture] Warning: disablePictureInPicture called when Picture in Picture is already disabled.");
     return;
@@ -111,6 +117,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 }
 
 - (void)startPictureInPicture {
+  NVAssertMainThread;
   if (!self.isPictureInPictureEnabled) {
     NSLog(@"[NVPictureInPicture] Warning: startPictureInPicture called when Picture in Picture is disabled");
     return;
@@ -127,6 +134,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 }
 
 - (void)stopPictureInPicture {
+  NVAssertMainThread;
   if (!self.isPictureInPictureActive) {
     NSLog(@"[NVPictureInPicture] stopPictureInPicture called when view is already in full-screen.");
     return;
@@ -426,6 +434,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 # pragma mark Presentor
 
 - (void)presentOnWindow:(UIWindow *)window completion:(void (^ _Nullable)(void))completion {
+  NVAssertMainThread;
   self.view.frame = CGRectMake(0,
                                self.fullScreenSize.height,
                                self.fullScreenSize.width,
@@ -450,6 +459,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 }
 
 - (void)dismissWithCompletion:(void (^)(void))completion {
+  NVAssertMainThread;
   [self viewWillDisappear:YES];
   __weak typeof(self) weakSelf = self;
   [UIView animateWithDuration:PresentationAnimationDuration
