@@ -186,10 +186,11 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
     }
   } else {
     CGPoint translation = [gestureRecognizer translationInView:self.view];
-    if (yMultiplier == 0) {
+    if (yMultiplier == 0 && translation.y != 0) {
       yMultiplier = translation.y / fabs(translation.y);
-      xMultiplier = translation.x / fabs(translation.x);
-      xMultiplier = xMultiplier == 0 ? yMultiplier : xMultiplier;
+      xMultiplier = (translation.x == 0
+                     ? yMultiplier
+                     : (translation.x / fabs(translation.x)));
       [self setPIPCenterWithVerticalPosition:yMultiplier
                           horizontalPosition:xMultiplier];
     }
