@@ -22,8 +22,8 @@ pod 'NVPictureInPicture'
 
 ## Usage
 
-1. Subclass NVPictureInPictureViewController to create custom view controller.
-2. Create an instance of `NVPictureInPicture` and use `presentNVPictureInPictureViewController` to present view controller in full-screen mode.
+1. Subclass NVPictureInPictureViewController to create custom view controller supporting Picture in Picture.
+2. Use presentOnWindow: to present view on window.
 
 ## Author
 
