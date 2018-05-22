@@ -45,7 +45,7 @@
  @abstract  Present NVPictureInPictureViewController
  @discussion  The view will be presented modally. The view controller will be added as a child of rootViewController of window
  */
-- (void)presentPictureInPictureViewControllerOnWindow:(UIWindow *)window animated:(BOOL)flag completion:(void (^ _Nullable)(void))completion;
+- (void)presentPictureInPictureViewControllerOnWindow:(UIWindow *)window animated:(BOOL)animated completion:(void (^ _Nullable)(void))completion;
 
 /*!
  @method    dismiss
@@ -56,7 +56,7 @@
  @abstract  Dismiss NVPictureInPictureViewController
  @discussion  The view will be dismissed modally. The view and the controller will be removed from the parent.
  */
-- (void)dismissPictureInPictureViewControllerAnimated:(BOOL)flag completion:(void (^ __nullable)(void))completion;
+- (void)dismissPictureInPictureViewControllerAnimated:(BOOL)animated completion:(void (^ __nullable)(void))completion;
 
 /*!
  @method    reload

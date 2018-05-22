@@ -432,7 +432,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 
 # pragma mark Presentor
 
-- (void)presentPictureInPictureViewControllerOnWindow:(UIWindow *)window animated:(BOOL)flag completion:(void (^ _Nullable)(void))completion {
+- (void)presentPictureInPictureViewControllerOnWindow:(UIWindow *)window animated:(BOOL)animated completion:(void (^ _Nullable)(void))completion {
   NVAssertMainThread;
   self.view.frame = CGRectMake(0,
                                self.fullScreenSize.height,
@@ -451,7 +451,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
       completion();
     }
   };
-  if (flag) {
+  if (animated) {
     [UIView animateWithDuration:PresentationAnimationDuration
                           delay:0.0f
          usingSpringWithDamping:AnimationDamping
@@ -468,7 +468,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
   }
 }
 
-- (void)dismissPictureInPictureViewControllerAnimated:(BOOL)flag completion:(void (^ __nullable)(void))completion {
+- (void)dismissPictureInPictureViewControllerAnimated:(BOOL)animated completion:(void (^ __nullable)(void))completion {
   NVAssertMainThread;
   [self viewWillDisappear:YES];
   __weak typeof(self) weakSelf = self;
@@ -486,7 +486,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
       completion();
     }
   };
-  if (flag) {
+  if (animated) {
     [UIView animateWithDuration:PresentationAnimationDuration
                           delay:0.0f
          usingSpringWithDamping:AnimationDamping
