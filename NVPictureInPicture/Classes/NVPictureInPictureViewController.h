@@ -94,6 +94,15 @@
 - (void)stopPictureInPicture;
 
 /*!
+ @method    updateViewWithTranslationPercentage:
+ @param     percentage
+ CGFloat ranging from 0 to 1, where 0 is Fullscreen and 1 is Picture in Picture.
+ @abstract  Override this method to implement custom view update on translation from full screen to Picture in Picture
+ @note      Call super in subclass implementation for default size translation.
+ */
+- (void)updateViewWithTranslationPercentage:(CGFloat)percentage;
+
+/*!
   @method   [Layout] pictureInPictureEdgeInsets
   @abstract Implement this method in subclass to return custom edge insets for Picture in Picture View.
   @discussion If not implemented, default insets will be used which is 10 for all edges. The Edge Insets are calculated with respect to device screen bounds.

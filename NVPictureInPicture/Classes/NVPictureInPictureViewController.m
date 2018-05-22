@@ -27,7 +27,6 @@ static const CGFloat ThresholdTranslationPercentageForPictureInPicture = 0.4;
 static const CGFloat AnimationDuration = 0.3f;
 static const CGFloat FreeFlowTimeAfterPan = 0.05;
 static const CGFloat AnimationDamping = 1.0f;
-static const CGFloat PictureInPictureCornerRadius = 5.0f;
 static const CGFloat PresentationAnimationDuration = 0.5f;
 static const CGFloat PresentationAnimationVelocity = 0.5f;
 
@@ -272,7 +271,6 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
                                 self.fullScreenSize.height - sizeDifference.height * percentage);
   self.view.center = CGPointMake(self.fullScreenCenter.x - centerDifference.x * percentage,
                                  self.fullScreenCenter.y - centerDifference.y * percentage);
-  self.view.layer.cornerRadius = PictureInPictureCornerRadius * percentage;
 }
 
 - (void)stickPictureInPictureToEdge {
