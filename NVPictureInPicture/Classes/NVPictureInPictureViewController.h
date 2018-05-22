@@ -35,24 +35,28 @@
 @property (nonatomic, readonly, getter=isPictureInPictureEnabled) BOOL pictureInPictureEnabled;
 
 /*!
- @method    presentOnWindow:
+ @method    presentPictureInPictureViewControllerOnWindow:animated:completion
  @param     window
  Window of the application where the view is to be added as subview.
+ @method    animated
+ Presented modally if animated is true.
  @param     completion
  The completion handler, if provided, will be invoked after the presented controller's viewDidAppear: callback is invoked.
  @abstract  Present NVPictureInPictureViewController
  @discussion  The view will be presented modally. The view controller will be added as a child of rootViewController of window
  */
-- (void)presentOnWindow:(UIWindow *)window completion:(void (^ __nullable)(void))completion;
+- (void)presentPictureInPictureViewControllerOnWindow:(UIWindow *)window animated:(BOOL)flag completion:(void (^ _Nullable)(void))completion;
 
 /*!
  @method    dismiss
+ @param     animated
+ Dismissed modally if animated is true.
  @param     completion
  The completion handler, if provided, will be invoked after the dismissed controller's viewDidDisappear: callback is invoked.
  @abstract  Dismiss NVPictureInPictureViewController
  @discussion  The view will be dismissed modally. The view and the controller will be removed from the parent.
  */
-- (void)dismissWithCompletion:(void (^ __nullable)(void))completion;
+- (void)dismissPictureInPictureViewControllerAnimated:(BOOL)flag completion:(void (^ __nullable)(void))completion;
 
 /*!
  @method    reload

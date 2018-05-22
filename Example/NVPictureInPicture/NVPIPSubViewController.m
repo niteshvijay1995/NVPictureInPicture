@@ -58,7 +58,7 @@ static const CGFloat PictureInPictureCornerRadius = 5.0f;
 }
 
 - (IBAction)close:(id)sender {
-  [self dismissWithCompletion:^{
+  [self dismissPictureInPictureViewControllerAnimated:YES completion:^{
     [self view];
   }];
 }

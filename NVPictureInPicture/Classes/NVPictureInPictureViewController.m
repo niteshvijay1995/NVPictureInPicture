@@ -432,53 +432,75 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 
 # pragma mark Presentor
 
-- (void)presentOnWindow:(UIWindow *)window completion:(void (^ _Nullable)(void))completion {
+- (void)presentPictureInPictureViewControllerOnWindow:(UIWindow *)window animated:(BOOL)flag completion:(void (^ _Nullable)(void))completion {
   NVAssertMainThread;
   self.view.frame = CGRectMake(0,
                                self.fullScreenSize.height,
                                self.fullScreenSize.width,
                                self.fullScreenSize.height);
   [window addSubview:self.view];
-  [UIView animateWithDuration:PresentationAnimationDuration
-                        delay:0.0f
-       usingSpringWithDamping:AnimationDamping
-        initialSpringVelocity:PresentationAnimationVelocity
-                      options:UIViewAnimationOptionCurveEaseIn
-                   animations:^{
-                     self.view.frame = CGRectMake(0,
-                                                  0,
-                                                  self.fullScreenSize.width,
-                                                  self.fullScreenSize.height);
-                   } completion:^(BOOL finished) {
-                     [window.rootViewController addChildViewController:self];
-                     if (completion != NULL) {
-                       completion();
-                     }
-                   }];
+  void(^animationBlock)(void) = ^{
+    self.view.frame = CGRectMake(0,
+                                 0,
+                                 self.fullScreenSize.width,
+                                 self.fullScreenSize.height);
+  };
+  void(^completionBlock)(void) = ^{
+    [window.rootViewController addChildViewController:self];
+    if (completion != NULL) {
+      completion();
+    }
+  };
+  if (flag) {
+    [UIView animateWithDuration:PresentationAnimationDuration
+                          delay:0.0f
+         usingSpringWithDamping:AnimationDamping
+          initialSpringVelocity:PresentationAnimationVelocity
+                        options:UIViewAnimationOptionCurveEaseIn
+                     animations:^{
+                       animationBlock();
+                     } completion:^(BOOL finished) {
+                       completionBlock();
+                     }];
+  } else {
+    animationBlock();
+    completionBlock();
+  }
 }
 
-- (void)dismissWithCompletion:(void (^)(void))completion {
+- (void)dismissPictureInPictureViewControllerAnimated:(BOOL)flag completion:(void (^ __nullable)(void))completion {
   NVAssertMainThread;
   [self viewWillDisappear:YES];
   __weak typeof(self) weakSelf = self;
-  [UIView animateWithDuration:PresentationAnimationDuration
-                        delay:0.0f
-       usingSpringWithDamping:AnimationDamping
-        initialSpringVelocity:PresentationAnimationVelocity
-                      options:UIViewAnimationOptionCurveEaseOut
-                   animations:^{
-                     self.view.frame = CGRectMake(self.view.frame.origin.x,
-                                                  self.fullScreenSize.height,
-                                                  self.view.frame.size.width,
-                                                  self.view.frame.size.height);
-                   } completion:^(BOOL finished) {
-                     [weakSelf.view removeFromSuperview];
-                     [weakSelf viewDidDisappear:YES];
-                     [weakSelf removeFromParentViewController];
-                     if (completion != NULL) {
-                       completion();
-                     }
-                   }];
+  void(^animationBlock)(void) = ^{
+    self.view.frame = CGRectMake(self.view.frame.origin.x,
+                                 self.fullScreenSize.height,
+                                 self.view.frame.size.width,
+                                 self.view.frame.size.height);
+  };
+  void(^completionBlock)(void) = ^{
+    [weakSelf.view removeFromSuperview];
+    [weakSelf viewDidDisappear:YES];
+    [weakSelf removeFromParentViewController];
+    if (completion != NULL) {
+      completion();
+    }
+  };
+  if (flag) {
+    [UIView animateWithDuration:PresentationAnimationDuration
+                          delay:0.0f
+         usingSpringWithDamping:AnimationDamping
+          initialSpringVelocity:PresentationAnimationVelocity
+                        options:UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                       animationBlock();
+                     } completion:^(BOOL finished) {
+                       completionBlock();
+                     }];
+  } else {
+    animationBlock();
+    completionBlock();
+  }
 }
 
 @end
