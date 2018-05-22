@@ -8,6 +8,8 @@
 
 #import "NVPIPSubViewController.h"
 
+static const CGFloat PictureInPictureCornerRadius = 5.0f;
+
 @interface NVPIPSubViewController () <NVPictureInPictureViewControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
@@ -67,6 +69,11 @@
   } else {
     return UIEdgeInsetsMake(30, 10, 20, 10);
   }
+}
+
+- (void)updateViewWithTranslationPercentage:(CGFloat)percentage {
+  [super updateViewWithTranslationPercentage:percentage];
+  self.view.layer.cornerRadius = PictureInPictureCornerRadius * percentage;
 }
 
 @end
