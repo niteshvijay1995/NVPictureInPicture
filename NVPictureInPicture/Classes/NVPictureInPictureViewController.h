@@ -20,7 +20,7 @@
  @property  delegate
  @abstract  The receiver's delegate.
  */
-@property (nonatomic, weak) id<NVPictureInPictureViewControllerDelegate> delegate;
+@property (nonatomic, weak) id<NVPictureInPictureViewControllerDelegate> pictureInPictureDelegate;
 
 /*!
  @property  pictureInPictureActive

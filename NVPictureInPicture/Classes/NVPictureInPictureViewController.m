@@ -125,9 +125,9 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
     NSLog(@"[NVPictureInPicture] Warning: startPictureInPicture called when view is already in picture-in-picture.");
     return;
   }
-  if (self.delegate != nil
-      && [self.delegate respondsToSelector:@selector(pictureInPictureViewControllerWillStartPictureInPicture:)]) {
-    [self.delegate pictureInPictureViewControllerWillStartPictureInPicture:self];
+  if (self.pictureInPictureDelegate != nil
+      && [self.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerWillStartPictureInPicture:)]) {
+    [self.pictureInPictureDelegate pictureInPictureViewControllerWillStartPictureInPicture:self];
   }
   [self translateViewToPictureInPictureWithInitialSpeed:0.0f];
 }
@@ -138,9 +138,9 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
     NSLog(@"[NVPictureInPicture] stopPictureInPicture called when view is already in full-screen.");
     return;
   }
-  if (self.delegate != nil
-      && [self.delegate respondsToSelector:@selector(pictureInPictureViewControllerWillStopPictureInPicture:)]) {
-    [self.delegate pictureInPictureViewControllerWillStopPictureInPicture:self];
+  if (self.pictureInPictureDelegate != nil
+      && [self.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerWillStopPictureInPicture:)]) {
+    [self.pictureInPictureDelegate pictureInPictureViewControllerWillStopPictureInPicture:self];
   }
   [self translateViewToFullScreen];
 }
@@ -179,9 +179,9 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
     [self.panGesture setTranslation:CGPointZero inView:self.view];
     yMultiplier = 0;
     xMultiplier = 0;
-    if (self.delegate != nil
-        && [self.delegate respondsToSelector:@selector(pictureInPictureViewControllerWillStartPictureInPicture:)]) {
-      [self.delegate pictureInPictureViewControllerWillStartPictureInPicture:self];
+    if (self.pictureInPictureDelegate != nil
+        && [self.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerWillStartPictureInPicture:)]) {
+      [self.pictureInPictureDelegate pictureInPictureViewControllerWillStartPictureInPicture:self];
     }
   } else {
     CGPoint translation = [gestureRecognizer translationInView:self.view];
@@ -320,9 +320,9 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 
 - (void)handleTap:(UIGestureRecognizer *)gestureRecognizer {
   if (self.isPictureInPictureActive) {
-    if (self.delegate != nil
-        && [self.delegate respondsToSelector:@selector(pictureInPictureViewControllerWillStopPictureInPicture:)]) {
-      [self.delegate pictureInPictureViewControllerWillStopPictureInPicture:self];
+    if (self.pictureInPictureDelegate != nil
+        && [self.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerWillStopPictureInPicture:)]) {
+      [self.pictureInPictureDelegate pictureInPictureViewControllerWillStopPictureInPicture:self];
     }
     [self stopPictureInPicture];
   }
@@ -345,9 +345,9 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
     if (finished) {
       [weakSelf.view addGestureRecognizer:self.pipTapGesture];
       weakSelf.pictureInPictureActive = YES;
-      if (weakSelf.delegate != nil
-          && [weakSelf.delegate respondsToSelector:@selector(pictureInPictureViewControllerDidStartPictureInPicture:)]) {
-        [weakSelf.delegate pictureInPictureViewControllerDidStartPictureInPicture:self];
+      if (weakSelf.pictureInPictureDelegate != nil
+          && [weakSelf.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerDidStartPictureInPicture:)]) {
+        [weakSelf.pictureInPictureDelegate pictureInPictureViewControllerDidStartPictureInPicture:self];
       }
     }
   }];
@@ -365,9 +365,9 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
     if (finished) {
       [weakSelf.view removeGestureRecognizer:self.pipTapGesture];
       weakSelf.pictureInPictureActive = NO;
-      if (weakSelf.delegate != nil
-          && [weakSelf.delegate respondsToSelector:@selector(pictureInPictureViewControllerDidStopPictureInPicture:)]) {
-        [weakSelf.delegate pictureInPictureViewControllerDidStopPictureInPicture:self];
+      if (weakSelf.pictureInPictureDelegate != nil
+          && [weakSelf.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerDidStopPictureInPicture:)]) {
+        [weakSelf.pictureInPictureDelegate pictureInPictureViewControllerDidStopPictureInPicture:self];
       }
     }
   }];

@@ -24,7 +24,7 @@ static const CGFloat PictureInPictureCornerRadius = 5.0f;
 - (void)viewDidLoad {
   [super viewDidLoad];
   self.view.clipsToBounds = YES;
-  self.delegate = self;
+  self.pictureInPictureDelegate = self;
   self.backButton.alpha = 0;
 }
 
