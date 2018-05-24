@@ -10,7 +10,7 @@
 
 static const CGFloat PictureInPictureCornerRadius = 5.0f;
 
-@interface NVPIPSubViewController () <NVPictureInPictureViewControllerDelegate>
+@interface NVPIPSubViewController () <NVPictureInPictureViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIButton *backButton;
@@ -24,7 +24,7 @@ static const CGFloat PictureInPictureCornerRadius = 5.0f;
 - (void)viewDidLoad {
   [super viewDidLoad];
   self.view.clipsToBounds = YES;
-  self.delegate = self;
+  self.pictureInPictureView.delegate = self;
   self.backButton.alpha = 0;
 }
 
@@ -45,14 +45,14 @@ static const CGFloat PictureInPictureCornerRadius = 5.0f;
 - (IBAction)back:(id)sender {
   self.closeButton.alpha = 0;
   self.backButton.alpha = 0;
-  [self startPictureInPicture];
+  [self.pictureInPictureView startPictureInPicture];
 }
 - (IBAction)togglePictureInPicture:(UISwitch *)sender {
   if (sender.isOn) {
-    [self enablePictureInPicture];
+    [self.pictureInPictureView enablePictureInPicture];
     self.backButton.alpha = 1;
   } else {
-    [self disablePictureInPicture];
+    [self.pictureInPictureView disablePictureInPicture];
     self.backButton.alpha = 0;
   }
 }
@@ -71,9 +71,9 @@ static const CGFloat PictureInPictureCornerRadius = 5.0f;
   }
 }
 
-- (void)updateViewWithTranslationPercentage:(CGFloat)percentage {
-  [super updateViewWithTranslationPercentage:percentage];
-  self.view.layer.cornerRadius = PictureInPictureCornerRadius * percentage;
-}
+//- (void)updateViewWithTranslationPercentage:(CGFloat)percentage {
+//  [self.pictureInPictureView updateViewWithTranslationPercentage:percentage];
+//  self.view.layer.cornerRadius = PictureInPictureCornerRadius * percentage;
+//}
 
 @end
