@@ -115,7 +115,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
   [self.view removeGestureRecognizer:self.panGesture];
 }
 
-- (void)startPictureInPicture {
+- (void)startPictureInPictureAnimated:(BOOL)animated {
   NVAssertMainThread;
   if (!self.isPictureInPictureEnabled) {
     NSLog(@"[NVPictureInPicture] Warning: startPictureInPicture called when Picture in Picture is disabled");
@@ -129,10 +129,10 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
       && [self.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerWillStartPictureInPicture:)]) {
     [self.pictureInPictureDelegate pictureInPictureViewControllerWillStartPictureInPicture:self];
   }
-  [self translateViewToPictureInPictureWithInitialSpeed:0.0f];
+  [self translateViewToPictureInPictureWithInitialSpeed:0.0f animated:animated];
 }
 
-- (void)stopPictureInPicture {
+- (void)stopPictureInPictureAnimated:(BOOL)animated {
   NVAssertMainThread;
   if (!self.isPictureInPictureActive) {
     NSLog(@"[NVPictureInPicture] stopPictureInPicture called when view is already in full-screen.");
@@ -142,7 +142,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
       && [self.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerWillStopPictureInPicture:)]) {
     [self.pictureInPictureDelegate pictureInPictureViewControllerWillStopPictureInPicture:self];
   }
-  [self translateViewToFullScreen];
+  [self translateViewToFullScreenWithInitialSpeed:0.0f animated:animated];
 }
 
 #pragma mark Datasource Methods
@@ -254,9 +254,9 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
   CGFloat speed = [self normalizeSpeedWithVelocity:velocity withPercentage:percentage];
   CGFloat normalizePercentage = [self normalizePercentage:percentage WithVelocity:velocity];
   if (normalizePercentage > ThresholdTranslationPercentageForPictureInPicture) {
-    [self translateViewToPictureInPictureWithInitialSpeed:speed];
+    [self translateViewToPictureInPictureWithInitialSpeed:speed animated:YES];
   } else {
-    [self translateViewToFullScreen];
+    [self translateViewToFullScreenWithInitialSpeed:speed animated:YES];
   }
 }
 
@@ -324,53 +324,67 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
         && [self.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerWillStopPictureInPicture:)]) {
       [self.pictureInPictureDelegate pictureInPictureViewControllerWillStopPictureInPicture:self];
     }
-    [self stopPictureInPicture];
+    [self stopPictureInPictureAnimated:YES];
   }
 }
 
 #pragma mark Translation Methods
 
-- (void)translateViewToPictureInPictureWithInitialSpeed:(CGFloat)speed {
+- (void)translateViewToPictureInPictureWithInitialSpeed:(CGFloat)speed animated:(BOOL)animated {
   self.view.autoresizingMask = UIViewAutoresizingNone;
   __weak typeof(self) weakSelf = self;
-  [UIView animateWithDuration:AnimationDuration
-                        delay:0
-       usingSpringWithDamping:AnimationDamping
-        initialSpringVelocity:speed
-                      options:UIViewAnimationOptionLayoutSubviews
-                   animations:^{
+  void(^animationBlock)(void) = ^{
     [weakSelf updateViewWithTranslationPercentage:1.0f];
-  }
-                   completion:^(BOOL finished) {
-    if (finished) {
-      [weakSelf.view addGestureRecognizer:self.pipTapGesture];
-      weakSelf.pictureInPictureActive = YES;
-      if (weakSelf.pictureInPictureDelegate != nil
-          && [weakSelf.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerDidStartPictureInPicture:)]) {
-        [weakSelf.pictureInPictureDelegate pictureInPictureViewControllerDidStartPictureInPicture:self];
-      }
+  };
+  void(^completionBlock)(void) = ^{
+    [weakSelf.view addGestureRecognizer:self.pipTapGesture];
+    weakSelf.pictureInPictureActive = YES;
+    if (weakSelf.pictureInPictureDelegate != nil
+        && [weakSelf.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerDidStartPictureInPicture:)]) {
+      [weakSelf.pictureInPictureDelegate pictureInPictureViewControllerDidStartPictureInPicture:self];
     }
-  }];
+  };
+  [self animateViewAnimated:animated speed:speed animationBlock:animationBlock completionBlock:completionBlock];
 }
 
-- (void)translateViewToFullScreen {
+- (void)translateViewToFullScreenWithInitialSpeed:(CGFloat)speed animated:(BOOL)animated {
   [UIApplication.sharedApplication sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
   self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   
   __weak typeof(self) weakSelf = self;
-  [UIView animateWithDuration:AnimationDuration animations:^{
+  void(^animationBlock)(void) = ^{
     [weakSelf updateViewWithTranslationPercentage:0.0f];
-    [weakSelf.view layoutIfNeeded];
-  } completion:^(BOOL finished) {
-    if (finished) {
-      [weakSelf.view removeGestureRecognizer:self.pipTapGesture];
-      weakSelf.pictureInPictureActive = NO;
-      if (weakSelf.pictureInPictureDelegate != nil
-          && [weakSelf.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerDidStopPictureInPicture:)]) {
-        [weakSelf.pictureInPictureDelegate pictureInPictureViewControllerDidStopPictureInPicture:self];
-      }
+  };
+  void(^completionBlock)(void) = ^{
+    [weakSelf.view removeGestureRecognizer:self.pipTapGesture];
+    weakSelf.pictureInPictureActive = NO;
+    if (weakSelf.pictureInPictureDelegate != nil
+        && [weakSelf.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerDidStopPictureInPicture:)]) {
+      [weakSelf.pictureInPictureDelegate pictureInPictureViewControllerDidStopPictureInPicture:self];
     }
-  }];
+  };
+  [self animateViewAnimated:animated speed:speed animationBlock:animationBlock completionBlock:completionBlock];
+}
+
+- (void)animateViewAnimated:(BOOL)animated speed:(CGFloat)speed animationBlock:(void (^)(void))animationBlock completionBlock:(void (^)(void))completionBlock {
+  if (animated) {
+    [UIView animateWithDuration:AnimationDuration
+                          delay:0
+         usingSpringWithDamping:AnimationDamping
+          initialSpringVelocity:speed
+                        options:UIViewAnimationOptionLayoutSubviews | UIViewAnimationCurveEaseInOut
+                     animations:^{
+                       animationBlock();
+                     }
+                     completion:^(BOOL finished) {
+                       if (finished) {
+                         completionBlock();
+                       }
+                     }];
+  } else {
+    animationBlock();
+    completionBlock();
+  }
 }
 
 #pragma mark Keyboard Handler

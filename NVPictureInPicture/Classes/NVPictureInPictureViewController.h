@@ -83,19 +83,23 @@
 - (void)disablePictureInPicture;
 
 /*!
- @method    startPictureInPicture
+ @method    startPictureInPictureAnimated:
+ @method    animated
+ Start Picture in Picture with animations if animated is true.
  @abstract  Start Picture in Picture with animation.
  @discussion  Receiver will call -pictureInPictureViewControllerWillStartPictureInPicture: before transition to Picture in Picture and -pictureInPictureViewControllerDidStartPictureInPicture: after successful transition. Client can stop Picture in Picture by calling -stopPictureInPicture. In addition the user can stop Picture in Picture through pan gesture.
  @note      startPictureInPicture will only work when Picture in Picture is enabled
  */
-- (void)startPictureInPicture;
+- (void)startPictureInPictureAnimated:(BOOL)animated;
 
 /*!
- @method    stopPictureInPicture
+ @method    stopPictureInPictureAnimated:
+ @method    animated
+ Stop Picture in Picture with animations if animated is true.
  @abstract  Stop Picture in Picture with animation.
  @discussion  Receiver will call -pictureInPictureViewControllerWillStopPictureInPicture: before transition to full screen and -pictureInPictureViewControllerDidStopPictureInPicture: after successful transition. Client can stop Picture in Picture by calling -stopPictureInPicture. In addition the user can stop Picture in Picture through tap on view.
  */
-- (void)stopPictureInPicture;
+- (void)stopPictureInPictureAnimated:(BOOL)animated;
 
 /*!
  @method    updateViewWithTranslationPercentage:
