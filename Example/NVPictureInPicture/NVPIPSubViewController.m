@@ -45,7 +45,7 @@ static const CGFloat PictureInPictureCornerRadius = 5.0f;
 - (IBAction)back:(id)sender {
   self.closeButton.alpha = 0;
   self.backButton.alpha = 0;
-  [self startPictureInPicture];
+  [self startPictureInPictureAnimated:YES];
 }
 - (IBAction)togglePictureInPicture:(UISwitch *)sender {
   if (sender.isOn) {
@@ -58,9 +58,7 @@ static const CGFloat PictureInPictureCornerRadius = 5.0f;
 }
 
 - (IBAction)close:(id)sender {
-  [self dismissPictureInPictureViewControllerAnimated:YES completion:^{
-    [self view];
-  }];
+  [self dismissPictureInPictureViewControllerAnimated:YES completion:nil];
 }
 
 - (UIEdgeInsets)pictureInPictureEdgeInsets {
