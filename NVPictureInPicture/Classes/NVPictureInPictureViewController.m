@@ -34,6 +34,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 
 @property (nonatomic) BOOL pictureInPictureActive;
 @property (nonatomic) BOOL pictureInPictureEnabled;
+@property (nonatomic, getter=isRecognizingGesture) BOOL recognizingGesture;
 @property (nonatomic) UIPanGestureRecognizer *panGesture;
 @property (nonatomic) UITapGestureRecognizer *pipTapGesture;
 @property (nonatomic) CGSize pipSize;
@@ -117,12 +118,15 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 
 - (void)startPictureInPictureAnimated:(BOOL)animated {
   NVAssertMainThread;
+  [self resetPanGesture];
   if (!self.isPictureInPictureEnabled) {
     NSLog(@"[NVPictureInPicture] Warning: startPictureInPicture called when Picture in Picture is disabled");
+    [self validateUIForCurrentStateAnimated:animated];
     return;
   }
   if (self.isPictureInPictureActive) {
     NSLog(@"[NVPictureInPicture] Warning: startPictureInPicture called when view is already in picture-in-picture.");
+    [self validateUIForCurrentStateAnimated:animated];
     return;
   }
   if (self.pictureInPictureDelegate != nil
@@ -134,8 +138,10 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 
 - (void)stopPictureInPictureAnimated:(BOOL)animated {
   NVAssertMainThread;
+  [self resetPanGesture];
   if (!self.isPictureInPictureActive) {
     NSLog(@"[NVPictureInPicture] stopPictureInPicture called when view is already in full-screen.");
+    [self validateUIForCurrentStateAnimated:animated];
     return;
   }
   if (self.pictureInPictureDelegate != nil
@@ -179,6 +185,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
     [self.panGesture setTranslation:CGPointZero inView:self.view];
     yMultiplier = 0;
     xMultiplier = 0;
+    self.recognizingGesture = YES;
     if (self.pictureInPictureDelegate != nil
         && [self.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerWillStartPictureInPicture:)]) {
       [self.pictureInPictureDelegate pictureInPictureViewControllerWillStartPictureInPicture:self];
@@ -204,8 +211,11 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
     } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded
                || gestureRecognizer.state == UIGestureRecognizerStateCancelled
                || gestureRecognizer.state == UIGestureRecognizerStateFailed) {
-      CGFloat velocity = yMultiplier * [gestureRecognizer velocityInView:self.view].y;
-      [self setDisplayModeWithTranslationPercentage:percentage velocity:velocity];
+      if (self.isRecognizingGesture) {
+        self.recognizingGesture = NO;
+        CGFloat velocity = yMultiplier * [gestureRecognizer velocityInView:self.view].y;
+        [self setDisplayModeWithTranslationPercentage:percentage velocity:velocity];
+      }
     }
   }
 }
@@ -214,6 +224,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
   if (gestureRecognizer.state == UIGestureRecognizerStateChanged) {
     CGPoint translation = [gestureRecognizer translationInView:self.view];
     [self.panGesture setTranslation:CGPointZero inView:self.view];
+    self.recognizingGesture = YES;
     CGPoint center = self.view.center;
     center.x += translation.x;
     center.y += translation.y;
@@ -221,26 +232,38 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
   } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded
              || gestureRecognizer.state == UIGestureRecognizerStateCancelled
              || gestureRecognizer.state == UIGestureRecognizerStateFailed) {
-    self.noInteractionFlag = NO;
-    CGPoint velocity = [gestureRecognizer velocityInView:self.view];
-    CGFloat speed = fabs(velocity.y / (self.fullScreenSize.height - self.pipSize.height));
-    [UIView animateWithDuration:AnimationDuration
-                          delay:0
-         usingSpringWithDamping:AnimationDamping
-          initialSpringVelocity:speed
-                        options:UIViewAnimationOptionLayoutSubviews
-                     animations:^{
-                       CGPoint center = self.view.center;
-                       center.x += velocity.x * FreeFlowTimeAfterPan;
-                       center.y += velocity.y * FreeFlowTimeAfterPan;
-                       self.view.center = [self validCenterPoint:center withSize:self.pipSize];;
-                     }
-                     completion:^(BOOL finished) {
-                     }];
+    if (self.isRecognizingGesture) {
+      self.noInteractionFlag = NO;
+      self.recognizingGesture = NO;
+      CGPoint velocity = [gestureRecognizer velocityInView:self.view];
+      CGFloat speed = fabs(velocity.y / (self.fullScreenSize.height - self.pipSize.height));
+      [self animateViewAnimated:YES
+                          speed:speed
+                 animationBlock:^{
+                   CGPoint center = self.view.center;
+                   center.x += velocity.x * FreeFlowTimeAfterPan;
+                   center.y += velocity.y * FreeFlowTimeAfterPan;
+                   self.view.center = [self validCenterPoint:center withSize:self.pipSize];
+                 } completionBlock:nil];
+    }
   }
 }
 
 #pragma mark Helper Methods
+
+- (void)resetPanGesture {
+  self.recognizingGesture = NO;
+  self.panGesture.enabled = NO;
+  self.panGesture.enabled = YES;
+}
+
+- (void)validateUIForCurrentStateAnimated:(BOOL)animated {
+  if (self.isPictureInPictureActive) {
+    [self translateViewToPictureInPictureWithInitialSpeed:0.0f animated:animated];
+  } else {
+    [self translateViewToFullScreenWithInitialSpeed:0.0 animated:animated];
+  }
+}
 
 - (CGFloat)normalizePercentage:(CGFloat)percentage WithVelocity:(CGFloat)velocity {
   return percentage + (velocity * FreeFlowTimeAfterPan) / (self.fullScreenSize.height - self.pipSize.height);
@@ -373,17 +396,15 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
          usingSpringWithDamping:AnimationDamping
           initialSpringVelocity:speed
                         options:UIViewAnimationOptionLayoutSubviews | UIViewAnimationCurveEaseInOut
-                     animations:^{
-                       animationBlock();
-                     }
+                     animations:animationBlock
                      completion:^(BOOL finished) {
-                       if (finished) {
-                         completionBlock();
-                       }
+                       (finished
+                        ? (completionBlock != nil ? completionBlock() : nil)
+                        : [self validateUIForCurrentStateAnimated:animated]);
                      }];
   } else {
-    animationBlock();
-    completionBlock();
+    animationBlock != nil ? animationBlock() : nil;
+    completionBlock != nil ? completionBlock() : nil;
   }
 }
 
