@@ -36,7 +36,6 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 @property (nonatomic) BOOL pictureInPictureEnabled;
 @property (nonatomic, getter=isRecognizingGesture) BOOL recognizingGesture;
 @property (nonatomic) UIPanGestureRecognizer *panGesture;
-@property (nonatomic) UITapGestureRecognizer *pipTapGesture;
 @property (nonatomic) CGSize pipSize;
 @property (nonatomic) CGSize fullScreenSize;
 @property (nonatomic) UIEdgeInsets pipEdgeInsets;
@@ -54,7 +53,6 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
   [super loadView];
   [self loadValues];
   self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
-  self.pipTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
 }
 
 - (void)viewDidLoad {
@@ -339,18 +337,6 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
   self.pipCenter = center;
 }
 
-#pragma mark Tap Gesture Handler
-
-- (void)handleTap:(UIGestureRecognizer *)gestureRecognizer {
-  if (self.isPictureInPictureActive) {
-    if (self.pictureInPictureDelegate != nil
-        && [self.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerWillStopPictureInPicture:)]) {
-      [self.pictureInPictureDelegate pictureInPictureViewControllerWillStopPictureInPicture:self];
-    }
-    [self stopPictureInPictureAnimated:YES];
-  }
-}
-
 #pragma mark Translation Methods
 
 - (void)translateViewToPictureInPictureWithInitialSpeed:(CGFloat)speed animated:(BOOL)animated {
@@ -360,7 +346,6 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
     [weakSelf updateViewWithTranslationPercentage:1.0f];
   };
   void(^completionBlock)(void) = ^{
-    [weakSelf.view addGestureRecognizer:self.pipTapGesture];
     weakSelf.pictureInPictureActive = YES;
     if (weakSelf.pictureInPictureDelegate != nil
         && [weakSelf.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerDidStartPictureInPicture:)]) {
@@ -379,7 +364,6 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
     [weakSelf updateViewWithTranslationPercentage:0.0f];
   };
   void(^completionBlock)(void) = ^{
-    [weakSelf.view removeGestureRecognizer:self.pipTapGesture];
     weakSelf.pictureInPictureActive = NO;
     if (weakSelf.pictureInPictureDelegate != nil
         && [weakSelf.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerDidStopPictureInPicture:)]) {
