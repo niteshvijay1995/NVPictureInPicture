@@ -59,9 +59,9 @@
 - (void)dismissPictureInPictureViewControllerAnimated:(BOOL)animated completion:(void (^ __nullable)(void))completion;
 
 /*!
- @method    reload
+ @method    reloadPictureInPicture
  @abstract  Reload Picture in Picture View Controller.
- @discussion  Reloads everything from scratch. The display mode is preserved. Call reload there is any change in DataSource.
+ @discussion  Reloads everything from scratch. The display mode is preserved. Call reloadPictureInPicture if there is any change in DataSource.
  @note      Reload is called by default on rotation.
  */
 - (void)reloadPictureInPicture;

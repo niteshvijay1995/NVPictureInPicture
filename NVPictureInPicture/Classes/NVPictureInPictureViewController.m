@@ -433,14 +433,14 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
                                         / (self.fullScreenSize.width - self.pipSize.width - self.pipEdgeInsets.left - self.pipEdgeInsets.right),
                                         (self.view.frame.origin.y - self.pipEdgeInsets.top)
                                         / (self.fullScreenSize.height - self.pipSize.height - self.pipEdgeInsets.top - self.pipEdgeInsets.bottom));
-      [self reload];
+      [self reloadPictureInPicture];
       CGPoint newCenter;
       newCenter.x = self.pipEdgeInsets.left + self.pipSize.width / 2 + originRatio.x * (size.width - self.pipSize.width - self.pipEdgeInsets.left - self.pipEdgeInsets.right);
       newCenter.y = self.pipEdgeInsets.top + self.pipSize.height / 2 + originRatio.y * (size.height - self.pipSize.height - self.pipEdgeInsets.top - self.pipEdgeInsets.bottom);
       self.view.center = [self validCenterPoint:newCenter withSize:self.view.bounds.size];
     }
   } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
-    [self reload];
+    [self reloadPictureInPicture];
   }];
 }
 
