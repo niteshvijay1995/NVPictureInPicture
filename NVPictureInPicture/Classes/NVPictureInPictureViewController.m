@@ -72,11 +72,24 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
   self.pipSize = [self pictureInPictureSize];
   self.fullScreenSize = [UIScreen mainScreen].bounds.size;
   self.fullScreenCenter = CGPointMake(self.fullScreenSize.width / 2, self.fullScreenSize.height / 2);
-  [self setPIPCenterWithVerticalPosition:bottom horizontalPosition:right];
+  if (self.isPictureInPictureActive) {
+    self.pipCenter = [self validCenterPoint:self.pipCenter withSize:self.pipSize];
+  } else {
+    [self setPIPCenterWithVerticalPosition:bottom horizontalPosition:right];
+  }
 }
 
 - (void)dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark Setter
+
+- (void)setPipCenter:(CGPoint)pipCenter {
+  _pipCenter = pipCenter;
+  if (self.isPictureInPictureActive) {
+    self.view.center = pipCenter;
+  }
 }
 
 
@@ -221,7 +234,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
     CGPoint center = self.view.center;
     center.x += translation.x;
     center.y += translation.y;
-    self.view.center = center;
+    self.pipCenter = center;
   } else if (gestureRecognizer.state == UIGestureRecognizerStateEnded
              || gestureRecognizer.state == UIGestureRecognizerStateCancelled
              || gestureRecognizer.state == UIGestureRecognizerStateFailed) {
@@ -236,7 +249,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
                    CGPoint center = self.view.center;
                    center.x += velocity.x * FreeFlowTimeAfterPan;
                    center.y += velocity.y * FreeFlowTimeAfterPan;
-                   self.view.center = [self validCenterPoint:center withSize:self.pipSize];
+                   self.pipCenter = [self validCenterPoint:center withSize:self.pipSize];
                  } completionBlock:nil];
     }
   }
@@ -295,7 +308,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
     return;
   }
   [UIView animateWithDuration:AnimationDuration animations:^{
-    self.view.center = [self validCenterPoint:self.view.center
+    self.pipCenter = [self validCenterPoint:self.view.center
                                      withSize:self.view.bounds.size];
   }];
 }
@@ -407,7 +420,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
     self.lastPointBeforeKeyboardToggle = self.view.center;
     self.noInteractionFlag = YES;
     [self animateWithKeyboardInfoDictionary:info animations:^{
-      self.view.center = [self validCenterPoint:self.view.center withSize:self.view.bounds.size];
+      self.pipCenter = [self validCenterPoint:self.view.center withSize:self.view.bounds.size];
     }];
   }
 }
@@ -417,7 +430,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
   NSDictionary* info = [notification userInfo];
   if (self.isPictureInPictureActive && self.noInteractionFlag) {
     [self animateWithKeyboardInfoDictionary:info animations:^{
-      self.view.center = [self validCenterPoint:self.lastPointBeforeKeyboardToggle withSize:self.view.bounds.size];
+      self.pipCenter = [self validCenterPoint:self.lastPointBeforeKeyboardToggle withSize:self.view.bounds.size];
     }];
     self.noInteractionFlag = NO;
   }
@@ -437,7 +450,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
       CGPoint newCenter;
       newCenter.x = self.pipEdgeInsets.left + self.pipSize.width / 2 + originRatio.x * (size.width - self.pipSize.width - self.pipEdgeInsets.left - self.pipEdgeInsets.right);
       newCenter.y = self.pipEdgeInsets.top + self.pipSize.height / 2 + originRatio.y * (size.height - self.pipSize.height - self.pipEdgeInsets.top - self.pipEdgeInsets.bottom);
-      self.view.center = [self validCenterPoint:newCenter withSize:self.view.bounds.size];
+      self.pipCenter = [self validCenterPoint:newCenter withSize:self.view.bounds.size];
     }
   } completion:^(id<UIViewControllerTransitionCoordinatorContext>  _Nonnull context) {
     [self reloadPictureInPicture];
