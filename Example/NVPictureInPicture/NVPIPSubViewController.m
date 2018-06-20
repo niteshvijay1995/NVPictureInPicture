@@ -26,6 +26,8 @@ static const CGFloat PictureInPictureCornerRadius = 5.0f;
   self.view.clipsToBounds = YES;
   self.pictureInPictureDelegate = self;
   self.backButton.alpha = 0;
+  UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+  [self.view addGestureRecognizer:tapGesture];
 }
 
 - (void)pictureInPictureViewControllerWillStartPictureInPicture:(NVPictureInPictureViewController *)pictureInPictureViewController {
@@ -72,6 +74,10 @@ static const CGFloat PictureInPictureCornerRadius = 5.0f;
 - (void)updateViewWithTranslationPercentage:(CGFloat)percentage {
   [super updateViewWithTranslationPercentage:percentage];
   self.view.layer.cornerRadius = PictureInPictureCornerRadius * percentage;
+}
+
+- (void)handleTap:(UIGestureRecognizer *)gestureRecognizer {
+  [self stopPictureInPictureAnimated:YES];
 }
 
 @end
