@@ -82,16 +82,11 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 
 #pragma mark Public Methods
 
-- (void)reload {
+- (void)reloadPictureInPicture {
   NVAssertMainThread;
+  [self resetPanGesture];
   [self loadValues];
-  if (self.isPictureInPictureActive) {
-    self.view.bounds = CGRectMake(0, 0, self.pipSize.width, self.pipSize.height);
-    [self stickPictureInPictureToEdge];
-  } else {
-    self.view.bounds = CGRectMake(0, 0, self.fullScreenSize.width, self.fullScreenSize.height);
-    self.view.center = self.fullScreenCenter;
-  }
+  [self validateUIForCurrentStateAnimated:YES];
 }
 
 - (void)enablePictureInPicture {

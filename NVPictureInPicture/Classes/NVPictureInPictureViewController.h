@@ -64,7 +64,7 @@
  @discussion  Reloads everything from scratch. The display mode is preserved. Call reload there is any change in DataSource.
  @note      Reload is called by default on rotation.
  */
-- (void)reload;
+- (void)reloadPictureInPicture;
 
 /*!
  @method    enablePictureInPicture
