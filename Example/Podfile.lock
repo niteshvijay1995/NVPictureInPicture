@@ -1,5 +1,5 @@
 PODS:
-  - NVPictureInPicture (0.10.0)
+  - NVPictureInPicture (1.0.0)
 
 DEPENDENCIES:
   - NVPictureInPicture (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  NVPictureInPicture: b5c2d40c569b9ee3cbf9449033fe6f33ff5e8980
+  NVPictureInPicture: e6e126c236efa54bf8795a3afda56e7c5bdbcf62
 
 PODFILE CHECKSUM: 682ec50bd104b727b8b28f46269a977e33566c8f
 
