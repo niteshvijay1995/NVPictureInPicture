@@ -340,6 +340,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 #pragma mark Translation Methods
 
 - (void)translateViewToPictureInPictureWithInitialSpeed:(CGFloat)speed animated:(BOOL)animated {
+  self.pictureInPictureActive = YES;
   if (self.pictureInPictureDelegate != nil
       && [self.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerWillStartPictureInPicture:)]) {
     [self.pictureInPictureDelegate pictureInPictureViewControllerWillStartPictureInPicture:self];
@@ -350,7 +351,6 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
     [weakSelf updateViewWithTranslationPercentage:1.0f];
   };
   void(^completionBlock)(void) = ^{
-    weakSelf.pictureInPictureActive = YES;
     if (weakSelf.pictureInPictureDelegate != nil
         && [weakSelf.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerDidStartPictureInPicture:)]) {
       [weakSelf.pictureInPictureDelegate pictureInPictureViewControllerDidStartPictureInPicture:self];
@@ -360,6 +360,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 }
 
 - (void)translateViewToFullScreenWithInitialSpeed:(CGFloat)speed animated:(BOOL)animated {
+  self.pictureInPictureActive = NO;
   if (self.pictureInPictureDelegate != nil
       && [self.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerWillStopPictureInPicture:)]) {
     [self.pictureInPictureDelegate pictureInPictureViewControllerWillStopPictureInPicture:self];
@@ -372,7 +373,6 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
     [weakSelf updateViewWithTranslationPercentage:0.0f];
   };
   void(^completionBlock)(void) = ^{
-    weakSelf.pictureInPictureActive = NO;
     if (weakSelf.pictureInPictureDelegate != nil
         && [weakSelf.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerDidStopPictureInPicture:)]) {
       [weakSelf.pictureInPictureDelegate pictureInPictureViewControllerDidStopPictureInPicture:self];
