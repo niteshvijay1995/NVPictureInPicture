@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'NVPictureInPicture'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'Picture in Picture for iPhone. It lets you present content floating on top of application.'
 
 # This description is used to generate tags and improve search results.
