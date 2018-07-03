@@ -135,6 +135,10 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
     [self validateUIForCurrentStateAnimated:animated];
     return;
   }
+  if (self.pictureInPictureDelegate != nil
+      && [self.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerWillStartPictureInPicture:)]) {
+    [self.pictureInPictureDelegate pictureInPictureViewControllerWillStartPictureInPicture:self];
+  }
   [self translateViewToPictureInPictureWithInitialSpeed:0.0f animated:animated];
 }
 
@@ -145,6 +149,10 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
     NSLog(@"[NVPictureInPicture] stopPictureInPicture called when view is already in full-screen.");
     [self validateUIForCurrentStateAnimated:animated];
     return;
+  }
+  if (self.pictureInPictureDelegate != nil
+      && [self.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerWillStopPictureInPicture:)]) {
+    [self.pictureInPictureDelegate pictureInPictureViewControllerWillStopPictureInPicture:self];
   }
   [self translateViewToFullScreenWithInitialSpeed:0.0f animated:animated];
 }
@@ -341,10 +349,6 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 
 - (void)translateViewToPictureInPictureWithInitialSpeed:(CGFloat)speed animated:(BOOL)animated {
   self.pictureInPictureActive = YES;
-  if (self.pictureInPictureDelegate != nil
-      && [self.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerWillStartPictureInPicture:)]) {
-    [self.pictureInPictureDelegate pictureInPictureViewControllerWillStartPictureInPicture:self];
-  }
   self.view.autoresizingMask = UIViewAutoresizingNone;
   __weak typeof(self) weakSelf = self;
   void(^animationBlock)(void) = ^{
@@ -361,10 +365,6 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
 
 - (void)translateViewToFullScreenWithInitialSpeed:(CGFloat)speed animated:(BOOL)animated {
   self.pictureInPictureActive = NO;
-  if (self.pictureInPictureDelegate != nil
-      && [self.pictureInPictureDelegate respondsToSelector:@selector(pictureInPictureViewControllerWillStopPictureInPicture:)]) {
-    [self.pictureInPictureDelegate pictureInPictureViewControllerWillStopPictureInPicture:self];
-  }
   [UIApplication.sharedApplication sendAction:@selector(resignFirstResponder) to:nil from:nil forEvent:nil];
   self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
   
