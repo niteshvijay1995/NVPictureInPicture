@@ -474,6 +474,7 @@ static const CGFloat PresentationAnimationVelocity = 0.5f;
   };
   void(^completionBlock)(void) = ^{
     [window.rootViewController addChildViewController:self];
+    [self didMoveToParentViewController:window.rootViewController];
     if (completion != NULL) {
       completion();
     }
